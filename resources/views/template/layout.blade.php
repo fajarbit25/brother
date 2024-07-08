@@ -180,7 +180,6 @@
 </div>
 <!-- ./wrapper -->
 
-
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 {{-- <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script> --}}
@@ -279,9 +278,12 @@
     } else if(orderValue === 'finance'){
       $(".nav-item").removeClass('menu-open')
       $("#finance").addClass('menu-open')
+    } else if(orderValue === 'tools'){
+      $(".nav-item").removeClass('menu-open')
+      $("#tools").addClass('menu-open')
     }
-    
 </script>
+@stack('scripts')
 @livewireScripts
 </body>
 </html>

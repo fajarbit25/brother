@@ -313,5 +313,6 @@ Route::controller(InvoiceController::class)->group(function(){
 
 Route::controller(ToolsController::class)->group(function(){
     Route::get('/tools', 'index')->middleware('auth')->name('tools.index');
+    Route::get('/tools/master', 'master')->middleware('auth')->name('tools.master');
 });
 

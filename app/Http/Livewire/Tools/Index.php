@@ -90,9 +90,7 @@ class Index extends Component
 
         $this->getDataTools();
 
-        $this->item = "";
-        $this->teknisi = "";
-        $this->qty = "";
+        
 
         // Kirim flash message
         session()->flash('success', 'Data berhasil disimpan!');

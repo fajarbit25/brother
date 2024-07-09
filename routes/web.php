@@ -295,6 +295,8 @@ Route::controller(TeknisiController::class)->group(function(){
     Route::get('/teknisi/{id}/material/use', 'loadStokMaterialUse')->middleware('auth')->name('teknisi.loadStokMaterialUse');
     Route::post('/teknisi/continue/order', 'continueOrder')->middleware('auth')->name('teknisi.continueOrder');
     Route::get('teknisi/show/{id}/buttonFooter', 'buttonFooter')->middleware('auth')->name('teknisi.buttonFooter');
+
+    Route::get('/sop', 'sop')->middleware('auth')->name('sop');
 });
 
 Route::controller(InvoiceController::class)->group(function(){

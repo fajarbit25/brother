@@ -624,5 +624,13 @@ public function material(): View
             'message'   => 'Order dipending!',
         ]);
     }
+
+    public function sop()
+    {
+        $data = [
+            'title'     => 'Standar Operational Procedure',
+        ];
+        return view('teknisi.sop', $data);
+    }
 }
 

@@ -8,10 +8,13 @@
                     Standar Operational Procedure
                     </h3>
     
-                  <div class="card-tools">
+                    @if(Auth::user()->privilege != 9 || Auth::user()->privilege != 10)
+                    <div class="card-tools">
                     <button type="button" class="btn btn-tool" wire:click="edit">
                         <i class="bi bi-pencil-square"></i>
                     </button>
+                    @endif
+
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
                     </button>

@@ -14,4 +14,12 @@ class ToolsController extends Controller
         ];
         return view('tools.index', $data);
     }
+
+    public function master(): View
+    {
+        $data = [
+            'title'     => 'Tools Inventory Data Master',
+        ];
+        return view('tools.master', $data);
+    } 
 }

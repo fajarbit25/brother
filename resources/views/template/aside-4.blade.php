@@ -74,6 +74,31 @@
     </ul>
 </li>
 {{-- End Order Nav --}}
+{{-- Inventory Nav --}}
+<li class="nav-item" id="tools">
+  <a href="#" class="nav-link">
+    <i class="bi bi-tools"></i>
+    <p>
+      Tools Inventory
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="/tools" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Tools</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/tools/master" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Master</p>
+      </a>
+    </li>
+    
+  </ul>
+</li>
     {{-- Operational Nav --}}
 <li class="nav-item" id="operational">
     <a href="#" class="nav-link">

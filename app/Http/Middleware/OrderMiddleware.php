@@ -17,7 +17,7 @@ class OrderMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->privilege == 1 || Auth::user()->privilege == 3 || Auth::user()->privilege == 4 || Auth::user()->privilege == 6){
+        if(Auth::user()->privilege == 1 || Auth::user()->privilege == 2 || Auth::user()->privilege == 3 || Auth::user()->privilege == 4 || Auth::user()->privilege == 6){
             return $next($request);
         }
 

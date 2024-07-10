@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('merks')) {
-
-            Schema::create('merks', function (Blueprint $table) {
-                $table->id();
-                $table->string('merk_name');
-                $table->timestamps();
-            });
-        }
+        Schema::create('tracking_orders', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('merks');
+        Schema::dropIfExists('tracking_orders');
     }
 };

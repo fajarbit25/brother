@@ -23,7 +23,7 @@
             <button class="btn btn-success btn-xs" disabled><i class="bi bi-check-circle"></i> Approved</button>
             @else
             <button class="btn btn-primary btn-xs" id="btn-approve-{{$r->idretur}}" onclick="approveRetur('{{$r->idretur}}', '{{$r->idproduct}}', {{$r->teknisi_id}})"><i class="bi bi-pencil-square"></i> Approve</button>
-            <button class="btn btn-danger btn-xs" onclick="deleteRetur({{$r->idretur}})"><i class="bi bi-trash3"></i></button>
+            <button class="btn btn-danger btn-xs" id="btn-delete-retur-{{$r->idretur}}" onclick="deleteRetur('{{$r->idretur}}', '{{$r->idproduct}}', {{$r->teknisi_id}})"><i class="bi bi-trash3"></i></button>
             @endif
         </td>
     </tr>

@@ -622,7 +622,8 @@ class InventoryController extends Controller
                 'reservasi_id' => $loadOutbound->reservasi_id,
                 'reservasi_approved'    => 0,
                 'reservasi_received'    => 0,
-                ]);
+                'teknisi_id'            => $loadOrder->teknisi,
+            ]);
             
         }else{
             $revId = date('Ymdhis');
@@ -721,6 +722,16 @@ class InventoryController extends Controller
         ]);
 
         return response()->json(['status' => 200, 'message' => 'Data berhasil di approve!']);
+    }
+
+    public function deleteRetur(Request $request)
+    {
+        $teknisi = $request->teknisi;
+        $product = $request->product;
+
+        Productuser::where('teknisi_id', $teknisi)->where('produk_id', $product)->update(['retur' => 0]);
+        Returan::where('id', $request->id)->delete();
+        return response()->json(['status' => 200, 'message' => 'Data berhasil dihapus!']);
     }
 
     /**Master */

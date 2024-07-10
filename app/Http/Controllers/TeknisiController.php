@@ -17,6 +17,7 @@ use App\Models\Products;
 use App\Models\Productuser;
 use App\Models\Returan;
 use App\Models\Stock;
+use App\Models\TrackingOrder;
 use App\Models\Timeline;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -57,6 +58,7 @@ public function material(): View
         $branch_id = Auth::user()->branch_id;
         $result = Outbounditem::where('outbound_id', $request->id)->where('temp_status', 1)
                     ->join('orders', 'orders.idorder', '=', 'outbounditems.order_id')
+                    ->where('outbounditems.teknisi', Auth::user()->id)
                     ->get();
 
         foreach($result as $r){
@@ -244,8 +246,8 @@ public function material(): View
             'countItem'             => Orderitem::where('order_id', $order->uuid)->count(), //Jumlah item pada order tersebut
             'countMaterialApprove'  => Outbounditem::where('teknisi', Auth::user()->id)
                                         ->where('temp_status', '!=', 3)->count(),
-            'materialRequest'       => Outbounditem::where('order_id', $order->idorder)->count(),
-            'materialUse'           => Ordermaterial::where('order_id', $order->idorder)->count(),
+            'materialRequest'       => Outbounditem::where('order_id', $order->idorder)->where('teknisi', Auth::user()->id)->count(),
+            'materialUse'           => Ordermaterial::where('order_id', $order->idorder)->where('teknisi_id', Auth::user()->id)->count(),
         ];
         return view('teknisi.buttonFooter', $data);
     }
@@ -301,11 +303,13 @@ public function material(): View
             'stocks'    => Ordermaterial::where('order_id', $load->idorder)
                                 ->join('products', 'products.diproduct', '=', 'ordermaterials.product_id')
                                 ->join('units', 'units.idunit', '=', 'products.satuan')
+                                ->where('ordermaterials.teknisi_id', Auth::user()->id)
                                 ->select('product_name as name', 'unit_code as satuan', 'qty as stock', 'ordermaterials.product_id')
                                 ->get(),
             'materialRequest'       => Outbounditem::where('order_id', $load->idorder)
                                         ->join('products', 'products.diproduct', '=', 'outbounditems.product_id')
                                         ->join('units', 'units.idunit', '=', 'products.satuan')
+                                        ->where('outbounditems.teknisi', Auth::user()->id)
                                         ->select('product_name as name', 'qty', 'unit_code as satuan', 'outbounditems.product_id')
                                         ->get(),
         ];
@@ -328,7 +332,7 @@ public function material(): View
             'qty'   => 'required',
         ]);
         
-        $cek = Ordermaterial::where('order_id', $request->idorder)->where('product_id', $request->idproduct)->get();
+        $cek = Ordermaterial::where('order_id', $request->idorder)->where('product_id', $request->idproduct)->where('teknisi_id', Auth::user()->id)->get();
         if(count($cek) == 0){
             Ordermaterial::create([
                 'order_id'      => $request->idorder,
@@ -390,9 +394,10 @@ public function material(): View
         $request->validate([
             'order_itemId' => 'required',
             'lantai'       => 'required|numeric',
-            'ruangan'      => 'required|min:2',
+            'ruangan'      => 'required|string|min:2',
+            'kode'         => 'required',
+            'order_uuid'   => 'required',
         ]);
-
 
         $id = $request->order_itemId;
         $data = [
@@ -403,6 +408,18 @@ public function material(): View
             'item_id'   => $request->tipe,
         ];
         Orderitem::where('idoi', $id)->update($data);
+
+        /**Insert Data Tracking */
+        $dataTracking = [
+            'track_id'      => $request->kode,
+            'order_id'      => $request->order_uuid,
+            'item_id'       => $request->tipe,
+            'teknisi'       => Auth::user()->id,
+            'helper'        => '-',
+        ];
+        TrackingOrder::create($dataTracking);
+
+
         return response()->json(['message' => 'Data order berhasil diupdate']);
     }
 
@@ -625,12 +642,20 @@ public function material(): View
         ]);
     }
 
-    public function sop()
+    public function sop(): View
     {
         $data = [
             'title'     => 'Standar Operational Procedure',
         ];
         return view('teknisi.sop', $data);
+    }
+
+    public function trackingUnit(): View
+    {
+        $data = [
+            'title'     => 'Trancking Unit',
+        ];
+        return view('teknisi.tracking-unit', $data);
     }
 }
 

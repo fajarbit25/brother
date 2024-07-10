@@ -255,7 +255,8 @@ function createJadwal()
             $("#modalJadwal").modal('hide');
 
             /**load tabel */
-            loadAll();
+            //loadAll();
+            window.location = "/order";
 
             /**Notifikasi */
             $(document).Toasts('create', {

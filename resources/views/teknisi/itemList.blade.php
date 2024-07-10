@@ -4,17 +4,19 @@
         <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
             <div class="fw-bold">{{$loop->iteration}}. {{$itm->item_name}}</div>
-            {{$itm->merk}} {{$itm->pk}}
+            {{$itm->merk}} {{$itm->pk}} | R.{{$itm->ruangan}} | LT.{{$itm->lantai}}
         </div>
-            @if($itm->lantai != 0)<button class="btn btn-secondary btn-sm" disabled><i class="bi bi-check-circle"></i> {{$order->progres}}</button>
-            @else<button class="btn btn-success btn-sm" onclick="prosesItem({{$itm->idoi}})">Proses</button>
+            @if($itm->lantai != 0)
+            <button class="btn btn-secondary btn-sm" disabled><i class="bi bi-check-circle"></i> {{$order->progres}}</button>
+            @else
+            <button class="btn btn-success btn-sm" onclick="prosesItem({{$itm->idoi}})">Proses</button>
             @endif
         </li>
         @endforeach
     </ol>
 </div>
 
-@if($countListDone == 0)
+
 <div class="card mb-3">
     <div class="card-header">
         Input Penggunaan Material
@@ -24,7 +26,6 @@
         <div class="col-sm-12" id="listMaterialUse"></div>
     </div>
 </div>
-@endif
 
 
 <!-- Modal material -->

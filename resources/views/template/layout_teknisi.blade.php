@@ -142,6 +142,14 @@
           </li>
           <li class="nav-header">PROFILE</li>
           <li class="nav-item">
+            <a href="/tracking-unit" class="nav-link">
+              <i class="bi bi-search"></i>
+              <p>
+                Tracking Unit
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="/employee/{{Auth::user()->nik}}/profile" class="nav-link">
               <i class="bi bi-person-circle"></i>
               <p>

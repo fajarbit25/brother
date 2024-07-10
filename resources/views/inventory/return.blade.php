@@ -92,5 +92,6 @@
 </div>
 <!-- /.modal -->
 {{-- Js --}}
-<script src="{{asset('/assets/js/return.js')}}"></script>
+<script src="{{asset('/assets/js/return.js?v1.2')}}"></script>
 @endsection
+

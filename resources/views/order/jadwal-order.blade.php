@@ -328,7 +328,7 @@
                 $("#modalJadwal").modal('hide');
 
                 /**load tabel */
-                loadAll();
+                window.location = "/order";
 
                 /**Notifikasi */
                 $(document).Toasts('create', {

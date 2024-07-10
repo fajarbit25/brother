@@ -97,6 +97,7 @@
         
         <form action="" id="formItem">
           <input type="hidden" name="order_itemId" id="order-itemId" required/>
+          <input type="hidden" id="order_uuid" name="order_uuid" value="{{$order->uuid}}" required/>
           <div class="form-group">
             <label for="tipe">Tipe Order <code>.Keluhan</code></label>
             <select name="tipe" id="tipe" class="form-control rounded-0">
@@ -122,6 +123,7 @@
                 <option value="4 PK">4 PK</option>
                 <option value="5 PK">5 PK</option>
                 <option value="6 PK">6 PK</option>
+                <option value="10 PK">10 PK</option>
               </select>
           </div>
           <div class="form-group">
@@ -131,6 +133,10 @@
           <div class="form-group">
               <label for="ruangan">Ruangan <code>.Nama Ruangan</code></label>
               <input type="text" name="ruangan" class="form-control rounded-0" id="ruangan" placeholder="Ruangan" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="kode">Kode <code>.Kode Unit</code></label>
+            <input type="text" name="kode" class="form-control rounded-0" id="kode" placeholder="Kode" autocomplete="off">
           </div>
         </form>
 
@@ -176,7 +182,7 @@
 <!-- /.modal Pending -->
 
 {{-- Js --}}
-<script src="{{asset('/assets/js/teknisiOrder.js')}}"></script>
+<script src="{{asset('/assets/js/teknisiOrder.js?v1.2')}}"></script>
 <script>
   $(document).ready(function(){
     var uuid = $("#uuid").val();

@@ -1,21 +1,20 @@
 <div class="card-body">
-    <button class="btn btn-danger btn-sm" id="btnModalContinue">Continous</button>
-    {{-- @if($countItemUnprocess != 0)
         <button class="btn btn-danger btn-sm" id="btnModalContinue">Continous</button>
-    @endif
 
-    @if($countItemUnprocess == 0)
         @if($order->progres == 'Closing')
           <a href="/teknisi/order" class="btn btn-danger float-right" id="modalUpload">Kembali</a>
         @else
             @if($countMaterialApprove == 0)
-                @if($materialRequest <= $materialUse)
-                <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button>
+
+                @if($materialUse >= $materialRequest)
+                    @if($countItemUnprocess == 0)
+                    <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button>
+                    @endif
                 @endif
+
             @endif
-          @endif
-    @endif --}}
-    <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button>
+        @endif
+    {{-- <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button> --}}
 </div>
 
 <!-- Modal upload -->

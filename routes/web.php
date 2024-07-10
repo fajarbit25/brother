@@ -73,6 +73,7 @@ Route::controller(InventoryController::class)->group(function(){
     /**Return */
     Route::get('/inventory/return', 'return')->middleware('auth')->name('inventory.return');
     Route::post('/inventory/return/approve', 'approveReturn')->middleware('auth')->name('inventory.approveReturn');
+    Route::post('/inventory/return/delete', 'deleteRetur')->middleware('auth')->name('inventory.deleteRetur');
     Route::get('/inventory/return/table', 'tableReturn')->middleware('auth')->name('inventory.tableReturn');
 
     /**Ajax url supplier*/
@@ -297,6 +298,7 @@ Route::controller(TeknisiController::class)->group(function(){
     Route::get('teknisi/show/{id}/buttonFooter', 'buttonFooter')->middleware('auth')->name('teknisi.buttonFooter');
 
     Route::get('/sop', 'sop')->middleware('auth')->name('sop');
+    Route::get('/tracking-unit', 'trackingUnit')->middleware('auth')->name('trackingUnit');
 });
 
 Route::controller(InvoiceController::class)->group(function(){

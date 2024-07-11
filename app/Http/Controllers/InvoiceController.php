@@ -90,8 +90,7 @@ class InvoiceController extends Controller
 
     public function viewPdf($name)
     {
-        //$pdfPath = Storage::path('invoice/'.$name); \\In linux
-        $pdfPath = Storage::path('public\\invoice\\'.$name); //In windows
+        $pdfPath = Storage::path('storage\\invoice\\'.$name); //In windows
 
         return response()->file($pdfPath);
     }

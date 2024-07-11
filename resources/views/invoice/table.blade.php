@@ -64,7 +64,7 @@
                         {{-- <button type="button" class="btn btn-primary btn-xs" title="Lihat Invoice" onclick="viewInvoice('{{$o->file}}', '{{$o->costumer_name}}')">
                             <i class="bi bi-eye"></i>
                         </button> --}}
-                        <a href="/invoice/{{$o->file}}/viewPdf" target="_blank" class="btn btn-primary btn-xs" title="Lihat Invoice">
+                        <a href="/storage/invoice/{{$o->file}}" target="_blank" class="btn btn-primary btn-xs" title="Lihat Invoice">
                             <i class="bi bi-eye"></i> Lihat
                         </a>
 

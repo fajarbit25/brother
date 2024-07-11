@@ -17,6 +17,7 @@
     {{-- <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button> --}}
 </div>
 
+
 <!-- Modal upload -->
 <div class="modal fade" id="modal-upload">
     <div class="modal-dialog modal-md">

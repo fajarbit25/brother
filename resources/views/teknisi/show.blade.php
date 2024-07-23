@@ -120,6 +120,7 @@
                 <option value="2 PK">2 PK</option>
                 <option value="2,5 PK">2,5 PK</option>
                 <option value="3 PK">3 PK</option>
+                <option value="3,5 PK">3,5 PK</option>
                 <option value="4 PK">4 PK</option>
                 <option value="5 PK">5 PK</option>
                 <option value="6 PK">6 PK</option>

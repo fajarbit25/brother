@@ -32,7 +32,7 @@
             @elseif($r->jenis == 'Retur')
                 Retur
             @else 
-                {{$r->order_id}}
+                {{$r->order_id}} | {{$r->costumer_name}}
             @endif
         </td>
         <td>{{$r->name}}</td>

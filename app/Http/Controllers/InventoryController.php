@@ -64,6 +64,8 @@ class InventoryController extends Controller
         $data = [
             'result'    => Mutation::where('mutations.branch_id', Auth::user()->branch_id)
                                 ->join('users', 'users.id', '=', 'mutations.penerima')
+                                ->leftJoin('orders', 'orders.uuid', 'mutations.order_id')
+                                ->leftJoin('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
                                 ->where('product_id', $product->diproduct)->limit(100)->paginate(10),
         ];
         return view('inventory.tabelMutasi', $data);

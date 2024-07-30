@@ -429,7 +429,7 @@ class InventoryController extends Controller
                                     ->where('product_code', 'LIKE', '%'.$key.'%')
                                     ->orWhere('product_name', 'LIKE', '%'.$key.'%')
                                     ->orderBy('diproduct', 'DESC')
-                                    ->select('diproduct as idproduk', 'product_code', 'product_name', 'harga_jual', 'category_code', 'unit_code')
+                                    ->select('diproduct as idproduk', 'product_code', 'product_name', 'harga_beli', 'harga_jual', 'category_code', 'unit_code')
                                     ->paginate(1000)
         ];
         return view('inventory.tableProduct', $data);

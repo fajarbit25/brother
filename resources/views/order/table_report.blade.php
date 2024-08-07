@@ -18,9 +18,9 @@
             <td> {{number_format($r->ppn)}} </td>
             <td> {{$r->name}} </td>
             <td> {{$r->jadwal}} </td>
-            <td> {{$r->progres}} </td>
+            <td> {{$r->progres}}</td>
             <td> {{$r->payment}} </td>
-            <td> {{$r->status_invoice}} </td>
+            <td> {{$r->status_invoice}}</td>
         </tr>
     @endforeach
         <tr>

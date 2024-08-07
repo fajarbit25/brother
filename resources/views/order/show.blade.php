@@ -200,53 +200,58 @@
             <div class="card-body">
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="timeline">
-                <!-- The timeline -->
-                <div class="timeline timeline-inverse">
-                    <!-- timeline time label -->
-                    <div class="time-label">
-                    <span class="bg-primary">
-                        Timeline
-                    </span>
-                    </div>
-                    <!-- /.timeline-label -->
-                    <!-- timeline item -->
-                    <div>
-                    </div>
-                    <!-- END timeline item -->
-                    @foreach($timeline as $tline)
-                    <!-- timeline item -->
-                    <div>
-                        <i class="fas fa-user bg-info"></i>
-                        <div class="timeline-item">
-                            <span class="time"><i class="far fa-clock"></i> {{$tline->created_at}} </span>
-                            <h3 class="timeline-header border-0">
-                                <a href="javascript:void(0)">{{$tline->name}}</a> <i class="bi bi-chevron-right"></i> <strong>{{$tline->keterangan}}</strong> <br/>
-                                <i>{{$tline->timeline_status}}</i>
-                                <p>
-                                  @if($tline->keterangan == 'Order Closing')
-                                  <button type="button" class="btn btn-success btn-sm" onclick="lihatNota()"><i class="bi bi-image"></i> Lihat Nota</button>
-                                  @endif
-                                  @if($tline->keterangan == 'Order Cancel')
-                                   <i>{{$tline->timeline_status}}</i>
-                                  @endif
-                                  @if($tline->keterangan == 'Order Pending')
+                  <!-- The timeline -->
+                  <div class="timeline timeline-inverse">
+                      <!-- timeline time label -->
+                      <div class="time-label">
+                      <span class="bg-primary">
+                          Timeline
+                      </span>
+                      </div>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <div>
+                      </div>
+                      <!-- END timeline item -->
+                      @foreach($timeline as $tline)
+                      <!-- timeline item -->
+                      <div>
+                          <i class="fas fa-user bg-info"></i>
+                          <div class="timeline-item">
+                              <span class="time"><i class="far fa-clock"></i> {{$tline->created_at}} </span>
+                              <h3 class="timeline-header border-0">
+                                  <a href="javascript:void(0)">{{$tline->name}}</a> <i class="bi bi-chevron-right"></i> <strong>{{$tline->keterangan}}</strong> <br/>
                                   <i>{{$tline->timeline_status}}</i>
-                                  @endif
-                                </p>
-                            </h3>
-                        </div>
-                    </div>
-                    <!-- END timeline item -->
-                    @endforeach
-                    <div>
-                        @if($order->progres == 'Complete')<i class="fas fa-check bg-success"></i>@endif
-                    </div>
-                    <!-- END timeline item -->
-                    
-                </div>
+                                  <p>
+                                    @if($tline->keterangan == 'Order Closing')
+                                    <button type="button" class="btn btn-success btn-sm" onclick="lihatNota()"><i class="bi bi-image"></i> Lihat Nota</button>
+                                    @endif
+                                    @if($tline->keterangan == 'Order Cancel')
+                                    <i>{{$tline->timeline_status}}</i>
+                                    @endif
+                                    @if($tline->keterangan == 'Order Pending')
+                                    <i>{{$tline->timeline_status}}</i>
+                                    @endif
+                                  </p>
+                              </h3>
+                          </div>
+                      </div>
+                      <!-- END timeline item -->
+                      @endforeach
+                      <div>
+                          @if($order->progres == 'Complete')<i class="fas fa-check bg-success"></i>@endif
+                      </div>
+                      <!-- END timeline item -->
+                      
+                  </div>
                 </div>
                 <!-- /.tab-pane -->
             </div><!-- /.card-body -->
+            <div class="card-footer">
+                @if(Auth::user()->privilege == '2')
+                  <button type="button" onclick="modalRecal()" class="btn btn-warning btn-sm"><i class="bi bi-repeat"></i> Recall Order</button>
+                @endif
+            </div>
         </div><!-- /.card -->
 
         </div><!-- /.col -->
@@ -282,6 +287,40 @@
                     <button type="button" class="btn btn-danger float-right" id="rejectNota"><i class="bi bi-x-lg"></i> Reject Nota</button>
                     <button type="button" class="btn btn-success float-right" id="approveNota"><i class="bi bi-check-circle-fill"></i> Approve Nota</button>
                   @endif
+              </div>
+          </form>
+      </div>
+  <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal upload -->
+
+<!-- Modal upload -->
+<div class="modal fade" id="modalRecall">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <form id="form-upload" enctype="multipart/form-data">
+              <div class="modal-header">
+                  <h4 class="modal-title"><i class="bi bi-repeat"></i> Recall Order</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+
+                <div class="alert alert-success">
+                  <span class="fw-bold">Alert!</span><br/>
+                  <span>- Order akan dikembalikan ke status</span> <span class="fw-bold">"Processing"</span>.<br/>
+                  <span>- Pastikan teknisi "{{$teknisi->name}}" tidak/belum memiliki order pada jadwal tersebut.</span>
+                </div>
+                
+                  
+              </div>
+              <div class="modal-footer justify-content-between">
+                  <input type="hidden" id="teknisi_id" value="{{$teknisi->id}}">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success float-right" id="processRecall"><i class="bi bi-check-circle-fill"></i> Proses Recall</button>
               </div>
           </form>
       </div>
@@ -369,6 +408,52 @@
 
   $("#close-alert").click(function(){
     $(".alert").hide();
+  });
+
+  function modalRecal()
+  {
+    $("#modalRecall").modal('show');
+  }
+  
+  $("#processRecall").click(function() {
+
+    $(this).attr('Disabled', true)
+    $(this).html('<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading...')
+
+    var url = '/order/recall';
+    var idorder = $("#idorder").val();
+    var teknisi = $("#teknisi_id").val();
+
+    $.ajax({
+      url:url,
+      type:'POST',
+      cache:false,
+      data:{
+        idorder:idorder,
+        teknisi:teknisi,
+      },
+      success:function(response){
+        $(document).Toasts('create', {
+            class: 'bg-success',
+            title: 'Congrats..',
+            subtitle: 'Success...',
+            body: response.success,
+        })
+
+        window.location = "/order"
+      },
+      error:function(){
+        /**Notifikasi */
+        $(document).Toasts('create', {
+            class: 'bg-danger',
+            title: 'Oopss..',
+            subtitle: 'Error...',
+            body: 'Proses Gagal!',
+        })
+      }
+    });
+
+    
   });
 </script>
 @endsection

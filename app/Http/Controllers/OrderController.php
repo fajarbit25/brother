@@ -755,5 +755,32 @@ class OrderController extends Controller
         ];
         return view('order.nomor-nota', $data);
     }
+
+    public function recall(Request $request)
+    {
+        $request->validate([
+            'idorder'   => 'required',
+            'teknisi'   => 'required',
+        ]);
+        $order = Order::where('idorder', $request->idorder)->update([
+            'progres'       => 'Processing',
+            'status'        => 'Open',
+            'status_invoice'=> null,
+            'tag_invoice'   => 0,
+            'payment'       => null,
+        ]);
+        
+        $loadTeknisiOrder = User::findOrFail($request->teknisi);
+        $teknisiOrder = $loadTeknisiOrder->teknisi_order_count;
+        $countOrderTeknisi = $teknisiOrder+1;
+
+        //$user = User::findOrFail($request->teknisi);
+        $loadTeknisiOrder->update(['teknisi_order_count' => $countOrderTeknisi]);
+
+        return response()->json([
+            'status'    => 200,
+            'message'   => 'Order berhasil direcall!',
+        ]);
+    }
      
 }

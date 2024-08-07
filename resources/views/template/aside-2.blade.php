@@ -32,6 +32,55 @@
 </li>
 {{-- End Inventory Nav --}}
 
+{{-- Order Nav --}}
+<li class="nav-item" id="order">
+  <a href="#" class="nav-link">
+    <i class="bi bi-cart4"></i>
+    <p>
+      Order
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="/order" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Order</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/order/jadwal-order" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Jadwal</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/order/report" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Laporan Order</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/order/pekerjaan-jasa" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Laporan Umum</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/order/nomor-nota" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Nomor Nota</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/order/master" class="nav-link">
+        <i class="bi bi-chevron-compact-right"></i>
+        <p>Master</p>
+      </a>
+    </li>
+  </ul>
+</li>
+
 {{-- Inventory Nav --}}
   <li class="nav-item" id="inventory">
     <a href="#" class="nav-link">
@@ -207,56 +256,6 @@
         </a>
       </li>
     </ul>
-    {{-- Operational Nav --}}
-    <li class="nav-item" id="operational">
-      <a href="#" class="nav-link">
-        <i class="bi bi-cash-coin"></i>
-        <p>
-          Operational
-          <i class="right fas fa-angle-left"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="/operational" class="nav-link">
-            <i class="bi bi-chevron-compact-right"></i>
-            <p>Pemasukan</p>
-          </a>
-        </li>
-      </ul>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="/operational/pengeluaran" class="nav-link">
-            <i class="bi bi-chevron-compact-right"></i>
-            <p>Pengeluaran</p>
-          </a>
-        </li>
-      </ul>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="/operational/history" class="nav-link">
-            <i class="bi bi-chevron-compact-right"></i>
-            <p>History</p>
-          </a>
-        </li>
-      </ul>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="/opx/cashbon" class="nav-link">
-            <i class="bi bi-chevron-compact-right"></i>
-            <p>Bon Karyawan</p>
-          </a>
-        </li>
-      </ul>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="/operational/master" class="nav-link">
-            <i class="bi bi-chevron-compact-right"></i>
-            <p>Master</p>
-          </a>
-        </li>
-      </ul>
-    </li>
     {{-- End Inventory Nav --}}
   </li>
   {{-- End Inventory Nav --}}

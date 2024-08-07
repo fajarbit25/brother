@@ -66,7 +66,8 @@ class InventoryController extends Controller
                                 ->join('users', 'users.id', '=', 'mutations.penerima')
                                 ->leftJoin('orders', 'orders.uuid', 'mutations.order_id')
                                 ->leftJoin('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
-                                ->where('product_id', $product->diproduct)->limit(100)->paginate(10),
+                                ->where('product_id', $product->diproduct)
+                                ->orderBy('mutations.created_at', 'DESC')->limit(100)->paginate(10),
         ];
         return view('inventory.tabelMutasi', $data);
     }

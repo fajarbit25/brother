@@ -156,6 +156,7 @@ Route::controller(OrderController::class)->group(function(){
     /**update V.2 */
     Route::get('/order/pekerjaan-jasa', 'pekerjaanJasa')->middleware('auth')->name('order.pekerjaanJasa');
     Route::get('/order/nomor-nota', 'nomorNota')->middleware('auth')->name('order.nomorNota');
+    Route::post('/order/recall', 'recall')->middleware('auth')->name('order.recall');
 
 });
 

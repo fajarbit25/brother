@@ -312,7 +312,7 @@
                 <div class="alert alert-success">
                   <span class="fw-bold">Alert!</span><br/>
                   <span>- Order akan dikembalikan ke status</span> <span class="fw-bold">"Processing"</span>.<br/>
-                  <span>- Pastikan teknisi "{{$teknisi->name}}" tidak/belum memiliki order pada jadwal tersebut.</span>
+                  <span>- Pastikan teknisi sebelumnya tidak/belum memiliki order pada jadwal tersebut.</span>
                 </div>
                 
                   
@@ -329,6 +329,7 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal upload -->
+
 
 
 <script type="text/javascript">

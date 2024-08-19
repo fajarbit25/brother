@@ -248,9 +248,11 @@
                 <!-- /.tab-pane -->
             </div><!-- /.card-body -->
             <div class="card-footer">
+              @if($order->progres == 'Complete')
                 @if(Auth::user()->privilege == '2')
                   <button type="button" onclick="modalRecal()" class="btn btn-warning btn-sm"><i class="bi bi-repeat"></i> Recall Order</button>
                 @endif
+              @endif
             </div>
         </div><!-- /.card -->
 
@@ -296,6 +298,8 @@
 </div>
 <!-- /.modal upload -->
 
+
+@if($order->progres == 'Complete')
 <!-- Modal upload -->
 <div class="modal fade" id="modalRecall">
   <div class="modal-dialog modal-lg">
@@ -329,6 +333,7 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal upload -->
+@endif
 
 
 

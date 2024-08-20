@@ -21,6 +21,7 @@ class PekerjaanJasa extends Component
     public $dataTeknisi;
     public $totalJasa;
     public $totalMaterial;
+    public $modalMaterial;
     public $totalDiscount;
     public $totalPPN;
     public $row = 10;
@@ -118,6 +119,7 @@ class PekerjaanJasa extends Component
                 'orderitems.disc', 
                 'ordermaterials.price as material',
                 'ppn', 'orders.uuid', 'harga_jual',
+                'harga_beli',
             )
             ->get();
 
@@ -135,6 +137,7 @@ class PekerjaanJasa extends Component
             // Calculate the total values
             $this->totalJasa = $item->sum('jasa');
             $this->totalMaterial = $data->sum('harga_jual');
+            $this->modalMaterial = $data->sum('harga_beli');
             $this->totalDiscount = $item->sum('disc');
             $this->totalPPN = $item->sum('ppn') ?? 0;
             $this->sumUnit = $item->sum('qty_item') ?? 0;

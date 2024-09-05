@@ -20,7 +20,7 @@ class NomorNota extends Component
     private $dataNota;
 
     protected $rules = [
-        'nomor'     => 'required|max:4|min:4|unique:nomor_notas',
+        'nomor'     => 'required|max:6|min:4|unique:nomor_notas',
         'teknisi'   => 'required',
     ];
 

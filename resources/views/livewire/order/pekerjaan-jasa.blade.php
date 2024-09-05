@@ -153,7 +153,7 @@
                                   <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-6">Margin Material</div>
-                                        <div class="col-6">: Rp.{{number_format($totalMaterial-$modalMaterial)}}</div>
+                                        <div class="col-6">: Rp.{{number_format($totalMaterial)}}</div>
                                     </div>
                                   </li>
                                   <li class="list-group-item">

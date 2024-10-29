@@ -535,6 +535,18 @@ class InventoryController extends Controller
         ];
         return view('inventory.reservasi', $data);
     }
+
+    public function stockById($id)
+    {
+        $stock = Stock::where('product_id', $id)->orderBy('idstock', 'DESC')->first();
+        $stockAkhir = $stock->stock ?? 0;
+
+        return response()->json([
+            'status'    => 200,
+            'stock'     => $stockAkhir,
+        ]);
+    }
+
     public function tableReservasi($id)
     {
         $data = [

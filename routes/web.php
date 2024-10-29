@@ -92,6 +92,7 @@ Route::controller(InventoryController::class)->group(function(){
     Route::post('/produk', 'productStore')->middleware('auth')->name('produk.store');
     Route::get('/produk/{id}/search', 'productSearch')->middleware('auth')->name('produk.search');
     Route::get('/produk/{id}/json', 'productJson')->middleware('auth')->name('produk.json');
+    Route::get('/produk/{id}/stockJson', 'stockById')->middleware('auth')->name('produk.stockById');
 
     /**Ajax url reservasi*/
     Route::get('/reservasi/{id}/table', 'tableReservasi')->middleware('auth')->name('reservasi.table');

@@ -59,7 +59,7 @@
                   </div>
                 </div><!-- /.col -->  
 
-                <div class="col-md-10">
+                <div class="col-md-8">
                     <div class="form-group">
                     <label>Nama Barang</label>
                     <select class="form-control select2bs4" style="width: 100%;" id="product">
@@ -72,6 +72,12 @@
                 </div>
                 <!-- /.col -->
 
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="stockAkhir">Stock</label>
+                    <input type="number" name="stockAkhir" id="stockAkhir" class="form-control" autocomplete="off" disabled/>
+                  </div>  
+                </div><!-- / .col -->
 
                 <div class="col-md-2">
                   <div class="form-group">
@@ -163,6 +169,6 @@
 <!-- /.content-wrapper -->
 
 {{-- Js --}}
-<script src="{{asset('/assets/js/reservasi.js?v=1.3')}}"></script>
+<script src="{{asset('/assets/js/reservasi.js?v=1.4')}}"></script>
 @endsection
 

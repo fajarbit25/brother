@@ -27,6 +27,30 @@ $("#order").change(function(){
     load();
 });
 
+$("#product").change(function(){
+    var idproduct = $(this).val();
+    var url = "/produk/"+ idproduct +"/stockJson";
+
+    $.ajax({
+        url:url,
+        type:'GET',
+        dataType:'json',
+        cache:false,
+        success:function(response) {
+            $("#stockAkhir").val(response.stock)
+        },
+        error:function(){
+            /**Notifikasi */
+            $(document).Toasts('create', {
+                class: 'bg-danger',
+                title: 'Error..',
+                subtitle: 'Oops...',
+                body: 'Gagal Memuat Stok',
+            })
+        }
+    });
+});
+
 /**Add Item */
 $("#btn-add").click(function(){
     /**Animation */

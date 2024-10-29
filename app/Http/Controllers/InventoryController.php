@@ -538,7 +538,7 @@ class InventoryController extends Controller
 
     public function stockById($id)
     {
-        $stock = Stock::where('product_id', $id)->where('branch_id', Auth::user()->id)->first();
+        $stock = Stock::where('product_id', $id)->where('branch_id', Auth::user()->branch_id)->first();
         $stockAkhir = $stock->stock ?? 0;
 
         return response()->json([

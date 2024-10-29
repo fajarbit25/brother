@@ -38,6 +38,7 @@ $("#product").change(function(){
         cache:false,
         success:function(response) {
             $("#stockAkhir").val(response.stock)
+            console.log(response.stock)
         },
         error:function(){
             /**Notifikasi */

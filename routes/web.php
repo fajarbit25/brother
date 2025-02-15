@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\CostumerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
@@ -58,7 +59,7 @@ Route::controller(InventoryController::class)->group(function(){
     Route::post('/inventory/inbound/inboundCancel', 'inboundCancel')->middleware('auth')->name('inventory.inboundCancel');
     Route::get('/inventory/inbound/report', 'InboundReport')->middleware('auth')->name('inventory.InboundReport');
     Route::get('/inventory/inbound/{start}/{end}/report', 'InboundTableReport')->middleware('auth')->name('inventory.InboundTableReport');
-    Route::get('/inventory/inbound/{start}/{end}/export', 'export')->middleware('auth')->name('inventory.InboundTableReport');
+    Route::get('/inventory/inbound/{start}/{end}/export', 'export')->middleware('auth')->name('inventory.InboundTableExport');
     Route::get('/inventory/{id}/tableMutasi', 'tableMutasi')->middleware('auth')->name('inventory.tableMutasi');
 
     /**Transaksi antar cabang */
@@ -320,5 +321,10 @@ Route::controller(InvoiceController::class)->group(function(){
 Route::controller(ToolsController::class)->group(function(){
     Route::get('/tools', 'index')->middleware('auth')->name('tools.index');
     Route::get('/tools/master', 'master')->middleware('auth')->name('tools.master');
+});
+
+Route::controller(AccountingController::class)->group(function () {
+    Route::get('/acc/approval', 'approval')->middleware('auth')->name('acc.approval');
+    Route::get('/acc/arus-kas', 'arusKhas')->middleware('auth')->name('acc.arusKhas');
 });
 

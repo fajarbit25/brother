@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Middleware\OrderMiddleware;
+use App\Models\AccountingApproval;
 use App\Models\Merk;
+use App\Models\Opsitem;
 
 class OrderController extends Controller
 {
@@ -471,6 +473,28 @@ class OrderController extends Controller
                 'invoice_id'    => time(),
                 'tag_invoice'   => 1,
             ]);
+
+            /**Get order */
+            $dataOrder = Order::where('idorder', $order)->first();
+            $amount = $dataOrder->total_price - $dataOrder->discount ?? 0;
+
+            /**Load Akun */
+
+            $item = Opsitem::where('item', 'Jasa Nota')->first();
+
+            /**Create Approval */
+            AccountingApproval::create([
+                'branch'        => Auth::user()->branch_id,
+                'segment'       => 'Nota',
+                'referensi_id'  => $dataOrder->nomor_nota,
+                'tanggal'       => date('Y-m-d'),
+                'tipe'          => 'debit',
+                'payment_method'=> $method,
+                'amount'        => $amount,
+                'approval'      => 'new',
+                'akun_id'       => $item->id,
+            ]);
+
             return response()->json(['success' => 'Payment method is update!']);
         }
     }

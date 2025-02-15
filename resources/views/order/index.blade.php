@@ -215,6 +215,7 @@
               <option value="Cash">Cash</option>
               <option value="BCA">BCA</option>
               <option value="Mandiri">Mandiri</option>
+              <option value="BRI">BRI</option>
               <option value="Termin">Termin</option>
               <option value="Pending">Pending</option>
             </optgroup>
@@ -223,6 +224,11 @@
       <div class="form-group" id="form-due_date">
         <label for="due_date">Tanggal Jatuh Tempo</label>
         <input type="date" name="due_date" id="due_date" class="form-control"/>
+      </div>
+      <div class="alert alert-info">
+        <span class="fw-bold fst-italic">
+          Order dianggap close/selesai, Apabila telah ada approval oleh admin Acoounting.
+        </span>
       </div>
       </div>
       <div class="modal-footer justify-content-between">

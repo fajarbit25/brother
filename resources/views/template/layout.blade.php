@@ -125,6 +125,10 @@
             @include('template.aside-8')
           @endif
 
+          @if(Auth::user()->privilege == 11)
+            @include('template.aside-11')
+          @endif
+
           <!-- End Aside-->
 
             {{-- End Inventory Nav --}}
@@ -297,6 +301,9 @@
     } else if(orderValue === 'tools'){
       $(".nav-item").removeClass('menu-open')
       $("#tools").addClass('menu-open')
+    } else if(orderValue === 'acc'){
+      $(".nav-item").removeClass('menu-open')
+      $("#accounting").addClass('menu-open')
     }
 </script>
 @stack('scripts')

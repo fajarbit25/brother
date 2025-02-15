@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Opsitem extends Model
+class AccountingSaldo extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'item',
-        'category',
-        'akun',
-        'type',
-        'klasifikasi',
+        'branch_id',
+        'petty_cash',
+        'saldo_akhir',
+        'updated_by',
     ];
 }

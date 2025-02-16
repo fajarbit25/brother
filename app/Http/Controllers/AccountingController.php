@@ -22,4 +22,12 @@ class AccountingController extends Controller
         ];
         return view('accounting.arus-kas', $data);
     }
+
+    public function akun(): View
+    {
+        $data = [
+            'title'     => 'Akun',
+        ];
+        return view('accounting.akun', $data);
+    }
 }

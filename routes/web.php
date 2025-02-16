@@ -326,5 +326,6 @@ Route::controller(ToolsController::class)->group(function(){
 Route::controller(AccountingController::class)->group(function () {
     Route::get('/acc/approval', 'approval')->middleware('auth')->name('acc.approval');
     Route::get('/acc/arus-kas', 'arusKhas')->middleware('auth')->name('acc.arusKhas');
+    Route::get('/acc/akun', 'akun')->middleware('auth')->name('acc.akun');
 });
 

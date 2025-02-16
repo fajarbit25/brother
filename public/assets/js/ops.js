@@ -22,8 +22,9 @@ function getSaldo()
         success:function(data){
 
             $("#saldoTunai").text(data.tunai)
-            $("#saldoNonTunai").text(data.nontunai)
-            $("#saldoNonTunaiLainnya").text(data.lainnya)
+            $("#saldoBCA").text(data.bca)
+            $("#saldoMandiri").text(data.mandiri)
+            $("#saldoBRI").text(data.bri)
         },
         error:function(){
             $("#saldoKas").text('Loading Error...')

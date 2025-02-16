@@ -6,6 +6,7 @@ use App\Models\AccountingApproval;
 use App\Models\AccountingArusKhas;
 use App\Models\AccountingSaldo;
 use App\Models\Costumer;
+use App\Models\Operational;
 use App\Models\Opsitem;
 use App\Models\Order;
 use App\Models\Orderitem;
@@ -124,9 +125,18 @@ class Approval extends Component
 
                         $saldo = AccountingSaldo::where('branch_id', Auth::user()->branch_id)->first();
 
-                        $saldoAkhir = $saldo->saldo_akhir+$data->amount;
-                        if ($data->payment_method == 'Cash') {
+
+                        if ($data->tipe == 'debit') {
+                            $saldoAkhir = $saldo->saldo_akhir+$data->amount;
+                        }
+                        if ($data->tipe == 'credit') {
+                            $saldoAkhir = $saldo->saldo_akhir-$data->amount;
+                        }
+
+                        if ($data->payment_method == 'Cash' && $data->tipe == 'debit') {
                             $pettyKhas = $saldo->petty_cash+$data->amount;
+                        } elseif ($data->payment_method == 'Cash' && $data->tipe == 'credit') {
+                            $pettyKhas = $saldo->petty_cash-$data->amount;
                         } else {
                             $pettyKhas = $saldo->petty_cash;
                         }
@@ -151,7 +161,7 @@ class Approval extends Component
                         }
 
                         //update Saldo
-                        $updateSaldo = AccountingSaldo::where('branch_id', Auth::user()->branch_id)
+                        AccountingSaldo::where('branch_id', Auth::user()->branch_id)
                                 ->update([
                                     'petty_cash'    => $pettyKhas,
                                     'saldo_akhir'   => $saldoAkhir,
@@ -172,6 +182,100 @@ class Approval extends Component
                         session()->flash('warning', 'Terjadi kesalahan '.$e->getMessage());
                     }
 
+                }
+
+            }
+
+            if ($approvalData->segment == 'Operational') {
+
+                try {
+
+                    if ($this->statusApproval == 'rejected') {
+
+                        //update status operational
+                        Operational::where('trx_id', $this->idreferensi)->update([
+                            'status_approval'   => 'rejected',
+                        ]);
+
+                        //update Approval
+                        AccountingApproval::where('id', $approvalData->id)
+                        ->update([
+                            'approval'      => $this->statusApproval,
+                        ]);
+                        
+                        $this->emit('closeModal');
+                        $this->reset('idApproval', 'idreferensi');
+
+                    }
+
+                    if ($this->statusApproval == 'approved') {
+
+                        $data = AccountingApproval::findOrFail($approvalData->id);
+                        $ops = Operational::where('trx_id', $data->referensi_id)->first();
+                        $akun = Opsitem::findOrFail($data->akun_id);
+
+                        $saldo = AccountingSaldo::where('branch_id', Auth::user()->branch_id)->first();
+
+                        if ($data->tipe == 'debit') {
+                            $saldoAkhir = $saldo->saldo_akhir+$data->amount;
+                        } elseif ($data->tipe == 'credit') {
+                            $saldoAkhir = $saldo->saldo_akhir-$data->amount;
+                        } else {
+                            session()->flash('error', 'Tampaknya Saldo bermasalah');
+                        }
+
+                        if ($data->payment_method == 'Cash' && $data->tipe == 'debit') {
+                            $pettyKhas = $saldo->petty_cash+$data->amount;
+                        } elseif ($data->payment_method == 'Cash' && $data->tipe == 'credit') {
+                            $pettyKhas = $saldo->petty_cash-$data->amount;
+                        } else {
+                            $pettyKhas = $saldo->petty_cash;
+                        }
+
+                        /**Create Arus Kas */
+                        AccountingArusKhas::create([
+                            'branch_id'         => Auth::user()->branch_id,
+                            'tanggal'           => $data->tanggal,
+                            'nota'              => $data->referensi_id,
+                            'costumer'          => $akun->item,
+                            'items'             => $ops->keterangan,
+                            'qty'               => 1,
+                            'payment_method'    => $data->payment_method,
+                            'payment_type'      => $data->tipe,
+                            'amount'            => $data->amount,
+                            'akun_id'           => $akun->id, //from ops item table
+                            'klasifikasi'       => $akun->category,
+                            'petty_cash'        => $pettyKhas,
+                            'saldo'             => $saldoAkhir,
+                        ]);
+
+                        //update Saldo
+                        AccountingSaldo::where('branch_id', Auth::user()->branch_id)
+                        ->update([
+                            'petty_cash'    => $pettyKhas,
+                            'saldo_akhir'   => $saldoAkhir,
+                        ]);
+
+                        //update Approval
+                        AccountingApproval::where('id', $approvalData->id)
+                        ->update([
+                            'approval'      => $this->statusApproval,
+                        ]);
+
+                        //update status operational
+                        Operational::where('trx_id', $data->referensi_id)->update([
+                            'status_approval'   => $this->statusApproval,
+                        ]);
+
+                        $this->emit('closeModal');
+                        $this->reset('idApproval', 'idreferensi');
+
+                        session()->flash('success', 'Approval berhasil!');
+
+                    }
+                    
+                } catch (\Exception $e) {
+                    session()->flash('warning', 'Terjadi kesalahan '.$e->getMessage());
                 }
 
             }

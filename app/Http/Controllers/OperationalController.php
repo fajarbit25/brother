@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountingApproval;
 use App\Models\Cashbon;
 use App\Models\Operational;
 use App\Models\Opsitem;
@@ -23,7 +24,7 @@ class OperationalController extends Controller
                                 ->orderBy('created_at', 'DESC')->first();
         $data = [
             'title'     => 'Operational',
-            'opsitem'   => Opsitem::all(),
+            'opsitem'   => Opsitem::where('type', 'LABA RUGI')->get(),
             'kas'       => $khas->saldo ?? 0,
         ];
         return view('operational.index', $data);
@@ -35,7 +36,7 @@ class OperationalController extends Controller
                                 ->orderBy('created_at', 'DESC')->first();
         $data = [
             'title'     => 'Operational',
-            'opsitem'   => Opsitem::all(),
+            'opsitem'   => Opsitem::where('type', 'LABA RUGI')->get(),
             'kas'       => $khas->saldo ?? 0,
         ];
         return view('operational.pengeluaran', $data);
@@ -49,7 +50,8 @@ class OperationalController extends Controller
                                         ->whereMonth('operationals.updated_at', $bulan)
                                         ->where('tipe', 'IN')
                                         ->select('operationals.id as id', 'trx_id', 'operationals.created_at',
-                                        'tipe', 'item', 'nomor_nota', 'amount', 'saldo', 'metode', 'keterangan')
+                                        'tipe', 'item', 'nomor_nota', 'amount', 'saldo', 'metode', 'keterangan',
+                                        'operationals.status_approval')
                                         ->orderBy('operationals.created_at', 'DESC')->paginate(10),
         ];
         return view('operational.tableops', $data);
@@ -63,7 +65,8 @@ class OperationalController extends Controller
                                         ->whereMonth('operationals.updated_at', $bulan)
                                         ->where('tipe', 'OUT')
                                         ->select('operationals.id as id', 'trx_id', 'operationals.created_at',
-                                        'tipe', 'item', 'nomor_nota', 'amount', 'saldo', 'metode', 'keterangan')
+                                        'tipe', 'item', 'nomor_nota', 'amount', 'saldo', 'metode', 'keterangan',
+                                        'operationals.status_approval')
                                         ->orderBy('operationals.created_at', 'DESC')->paginate(10),
         ];
         return view('operational.tableopsout', $data);
@@ -129,6 +132,20 @@ class OperationalController extends Controller
         ];
 
         Operational::create($data);
+
+        /**Create Aprroval Accounting */
+        AccountingApproval::create([
+            'branch'        => Auth::user()->branch_id,
+            'segment'       => 'Operational',
+            'referensi_id'  => $data['trx_id'],
+            'tanggal'       => date('Y-m-d'),
+            'tipe'          => 'credit',
+            'payment_method'=> $request->metode,
+            'amount'        => $request->amount,
+            'approval'      => 'new',
+            'akun_id'       => $request->jenis,
+        ]);
+
         return response()->json([
             'status'    => 200,
             'message'   => 'Submit Success..!'
@@ -171,6 +188,20 @@ class OperationalController extends Controller
         ];
 
         Operational::create($data);
+
+        /**Create Aprroval Accounting */
+        AccountingApproval::create([
+            'branch'        => Auth::user()->branch_id,
+            'segment'       => 'Operational',
+            'referensi_id'  => $data['trx_id'],
+            'tanggal'       => date('Y-m-d'),
+            'tipe'          => 'debit',
+            'payment_method'=> $request->metode,
+            'amount'        => $request->amount,
+            'approval'      => 'new',
+            'akun_id'       => $request->jenis,
+        ]);
+
         return response()->json([
             'status'    => 200,
             'message'   => 'Submit Success..!'
@@ -246,20 +277,25 @@ class OperationalController extends Controller
         $saldoTunai = Operational::where('branch_id', Auth::user()->branch_id)
                                     ->where('metode', 'Cash')
                                     ->orderBy('id', 'DESC')->first();
-        $saldoNonTunai = Operational::where('branch_id', Auth::user()->branch_id)
+        $saldoBCA = Operational::where('branch_id', Auth::user()->branch_id)
                                     ->where('metode', 'BCA')
                                     ->orderBy('id', 'DESC')->first();
-        $saldoNonTunaiLainnya = Operational::where('branch_id', Auth::user()->branch_id)
+        $saldoMandiri = Operational::where('branch_id', Auth::user()->branch_id)
                                     ->where('metode', 'Mandiri')
                                     ->orderBy('id', 'DESC')->first();
+        $saldoBRI = Operational::where('branch_id', Auth::user()->branch_id)
+                                    ->where('metode', 'BRI')
+                                    ->orderBy('id', 'DESC')->first();
         //deklarasi saldo
-        $saldoT = $saldoTunai->saldo ?? 0;
-        $saldoNT = $saldoNonTunai->saldo ?? 0;
-        $saldoNTLainnya = $saldoNonTunaiLainnya->saldo ?? 0;
+        $tunai = $saldoTunai->saldo ?? 0;
+        $bca = $saldoBCA->saldo ?? 0;
+        $mandiri = $saldoMandiri->saldo ?? 0;
+        $bri = $saldoBRI->saldo ?? 0;
         $data = [
-            'tunai'     => number_format($saldoT),
-            'nontunai'  => number_format($saldoNT),
-            'lainnya'   => number_format($saldoNTLainnya),
+            'tunai'     => number_format($tunai),
+            'bca'       => number_format($bca),
+            'mandiri'   => number_format($mandiri),
+            'bri'       => number_format($bri), 
             ];
         return response()->json($data);
     }

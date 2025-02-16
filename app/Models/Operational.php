@@ -23,5 +23,6 @@ class Operational extends Model
         'saldo',
         'bukti_transaksi',
         'nomor_nota',
+        'status_approval',
     ];
 }

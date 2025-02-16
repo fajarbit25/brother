@@ -29,56 +29,74 @@
       <div class="row">
         <!-- Left col -->
         <div class="col-md-12">
-            <div class="row">
-          <div class="col-4 col-sm-4 col-md-4">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="bi bi-wallet2"></i></span>
-  
-              <div class="info-box-content">
-                <span class="info-box-text">Kas Tunai</span>
-                <span class="info-box-number">
-                   <p id="saldoTunai"></p>
-  
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
+          <div class="row">
           
-          <div class="col-4 col-sm-4 col-md-4">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="bi bi-wallet2"></i></span>
-  
-              <div class="info-box-content">
-                <span class="info-box-text">Kas Non Tunai</span>
-                <span class="info-box-number">
-                  
-                   <p id="saldoNonTunai"></p>
-  
-                </span>
+            <div class="col-2 col-sm-3 col-md-3">
+              <div class="info-box mb-3">
+                <span class="info-box-icon bg-danger elevation-1"><i class="bi bi-wallet2"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Tunai</span>
+                  <span class="info-box-number">
+                     <p id="saldoTunai"></p>
+    
+                  </span>
+                </div>
+                <!-- /.info-box-content -->
               </div>
-              <!-- /.info-box-content -->
+              <!-- /.info-box -->
             </div>
-            <!-- /.info-box -->
-          </div>
-          
-          <div class="col-4 col-sm-4 col-md-4">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-info elevation-1"><i class="bi bi-wallet2"></i></span>
-  
-              <div class="info-box-content">
-                <span class="info-box-text">Kas Non Tunai Lainnya</span>
-                <span class="info-box-number">
-                  
-                   <p id="saldoNonTunaiLainnya"></p>
-  
-                </span>
+            
+            <div class="col-2 col-sm-3 col-md-3">
+              <div class="info-box mb-3">
+                <span class="info-box-icon bg-success elevation-1"><i class="bi bi-wallet2"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">BCA</span>
+                  <span class="info-box-number">
+                    
+                     <p id="saldoBCA"></p>
+    
+                  </span>
+                </div>
+                <!-- /.info-box-content -->
               </div>
-              <!-- /.info-box-content -->
+              <!-- /.info-box -->
             </div>
-            <!-- /.info-box -->
-          </div>
+            
+            <div class="col-2 col-sm-3 col-md-3">
+              <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="bi bi-wallet2"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Mandiri</span>
+                  <span class="info-box-number">
+                    
+                     <p id="saldoMandiri"></p>
+    
+                  </span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </div>
+  
+            <div class="col-2 col-sm-3 col-md-3">
+              <div class="info-box mb-3">
+                <span class="info-box-icon bg-info elevation-1"><i class="bi bi-wallet2"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">BRI</span>
+                  <span class="info-box-number">
+                    
+                     <p id="saldoBRI"></p>
+    
+                  </span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </div>
           
           </div> <!-- /.row -->
           
@@ -104,13 +122,13 @@
             <!-- /.card-header -->
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table m-0">
+                <table class="table m-0" style="font-size: 12px;">
                   <thead>
                   <tr>
                     <th>No</th>
                     <th>TXID</th>
                     <th>Date Time</th>
-                    <th>Tipe</th>
+                    <th>Status</th>
                     <th>Jenis Transaksi</th>
                     <th>Amount</th>
                     <th>Saldo</th>
@@ -179,8 +197,9 @@
                   <label>Metode Transaksi</label>
                   <select name="metode" id="metode" class="form-control">
                     <option value="Cash"> Cash </option>
-                    <option value="Transfer"> Transfer </option>
-                    <option value="Lainnya"> Lainnya </option>
+                    <option value="BCA"> BCA</option>
+                    <option value="Mandiri"> Mandiri</option>
+                    <option value="BRI"> BRI</option> 
                   </select>
                 </div>
             </div><!-- /.col -->

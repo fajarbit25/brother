@@ -29,8 +29,9 @@
       <div class="row">
         <!-- Left col -->
         <div class="col-md-12">
-            <div class="row">
-          <div class="col-4 col-sm-4 col-md-4">
+          <div class="row">
+            
+          <div class="col-2 col-sm-3 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-danger elevation-1"><i class="bi bi-wallet2"></i></span>
   
@@ -46,7 +47,7 @@
             <!-- /.info-box -->
           </div>
           
-          <div class="col-4 col-sm-4 col-md-4">
+          <div class="col-2 col-sm-3 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-success elevation-1"><i class="bi bi-wallet2"></i></span>
   
@@ -54,7 +55,7 @@
                 <span class="info-box-text">BCA</span>
                 <span class="info-box-number">
                   
-                   <p id="saldoNonTunai"></p>
+                   <p id="saldoBCA"></p>
   
                 </span>
               </div>
@@ -63,7 +64,7 @@
             <!-- /.info-box -->
           </div>
           
-          <div class="col-4 col-sm-4 col-md-4">
+          <div class="col-2 col-sm-3 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-info elevation-1"><i class="bi bi-wallet2"></i></span>
   
@@ -71,7 +72,24 @@
                 <span class="info-box-text">Mandiri</span>
                 <span class="info-box-number">
                   
-                   <p id="saldoNonTunaiLainnya"></p>
+                   <p id="saldoMandiri"></p>
+  
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+
+          <div class="col-2 col-sm-3 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-info elevation-1"><i class="bi bi-wallet2"></i></span>
+  
+              <div class="info-box-content">
+                <span class="info-box-text">BRI</span>
+                <span class="info-box-number">
+                  
+                   <p id="saldoBRI"></p>
   
                 </span>
               </div>
@@ -103,13 +121,13 @@
             <!-- /.card-header -->
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table m-0">
+                <table class="table m-0" style="font-size: 12px;">
                   <thead>
                   <tr>
                     <th>No</th>
                     <th>TXID</th>
                     <th>Date Time</th>
-                    <th>Tipe</th>
+                    <th>Status</th>
                     <th>Jenis Transaksi</th>
                     <th>Nomor Nota</th>
                     <th>Amount</th>
@@ -180,6 +198,7 @@
                     <option value="Cash"> Cash </option>
                     <option value="BCA"> BCA</option>
                     <option value="Mandiri"> Mandiri</option>
+                    <option value="BRI"> BRI</option>
                   </select>
                 </div>
             </div><!-- /.col -->

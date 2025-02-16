@@ -55,7 +55,7 @@ class ArusKas extends Component
         $this->items = $query->select(
             'accounting_arus_khas.*',
             'opsitems.item',
-        )->paginate(10);
+        )->get();
     }
 
     public function reloadData()

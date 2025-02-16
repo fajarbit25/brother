@@ -36,9 +36,9 @@
               <h3 class="card-title">Item Operational</h3>
 
               <div class="card-tools">
-                <button type="button" class="btn btn-tool" onclick="modalItem()">
+                {{-- <button type="button" class="btn btn-tool" onclick="modalItem()">
                     <i class="fas fa-plus"></i>
-                </button>
+                </button> --}}
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                   <i class="fas fa-minus"></i>
                 </button>
@@ -83,7 +83,7 @@
 <!-- /.content-wrapper -->
 
 <!-- Modal -->
-<div class="modal fade" id="modal-item">
+{{-- <div class="modal fade" id="modal-item">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
@@ -114,11 +114,11 @@
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
-</div>
+</div> --}}
 <!-- /.modal -->
 
 <!-- Modal -->
-<div class="modal fade" id="modal-edit-item">
+{{-- <div class="modal fade" id="modal-edit-item">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
@@ -149,11 +149,12 @@
       <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
-  </div>
+</div> --}}
   <!-- /.modal -->
 
   <!-- Modal -->
-<div class="modal fade" id="modal-delete-item">
+
+  {{-- <div class="modal fade" id="modal-delete-item">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
@@ -174,7 +175,7 @@
       <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
-  </div>
+  </div> --}}
   <!-- /.modal -->
 
 <script src="{{asset('/assets/js/ops.js')}}"></script>

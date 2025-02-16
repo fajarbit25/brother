@@ -1,6 +1,12 @@
 <div class="col-sm-12">
     <div class="row">
 
+      @if (session('error'))
+      <div class="alert alert-warning col-sm-12">
+          <span class="fst-italic"> {{session('error')}} </span>
+      </div>
+      @endif
+
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header border-transparent">

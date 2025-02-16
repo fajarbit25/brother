@@ -67,6 +67,14 @@
         </a>
       </li>
     </ul>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="/acc/akun" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>Akun</p>
+        </a>
+      </li>
+    </ul>
 
   </li>
 

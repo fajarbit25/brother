@@ -24,7 +24,8 @@
   <section class="content">
     <div class="container-fluid">
 
-      @livewire('inventory.pos')
+      <span class="fw-bold text-success">Mohon maaf, untuk sementara transaksi POS dihentikan!</span>
+      {{-- @livewire('inventory.pos') --}}
 
     </div><!--/. container-fluid -->
   </section>

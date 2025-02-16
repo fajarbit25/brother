@@ -26,6 +26,58 @@
     </ul>
   </li>
 
+  {{-- Operational Nav --}}
+  <li class="nav-item" id="operational">
+    <a href="#" class="nav-link">
+      <i class="bi bi-cash-coin"></i>
+      <p>
+        Operational
+        <i class="right fas fa-angle-left"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="/operational" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>Pemasukan</p>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="/operational/pengeluaran" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>Pengeluaran</p>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="/operational/history" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>History</p>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="/opx/cashbon" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>Bon Karyawan</p>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="/operational/master" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>Master</p>
+        </a>
+      </li>
+    </ul>
+  </li>
+  {{-- End Inventory Nav --}}
+
   <li class="nav-item" id="accounting">
 
     <a href="#" class="nav-link">

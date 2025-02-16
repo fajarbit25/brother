@@ -17,7 +17,7 @@ class OperationalMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->privilege == 1 || Auth::user()->privilege == 4){
+        if(Auth::user()->privilege == 1 || Auth::user()->privilege == 4 || Auth::user()->privilege == 11){
             return $next($request);
         }
 

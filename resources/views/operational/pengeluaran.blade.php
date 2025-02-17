@@ -131,7 +131,7 @@
                     <th>Status</th>
                     <th>Jenis Transaksi</th>
                     <th>Amount</th>
-                    <th>Saldo</th>
+                    <th>Creator</th>
                     <th>Metode</th>
                     <th>Bukti Transaksi</th>
                     <th>Keterangan</th>

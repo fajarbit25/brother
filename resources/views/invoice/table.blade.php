@@ -78,12 +78,12 @@
 
                         @if($o->status == 'Approved')
                             <button id="btn-send-{{$o->id}}" onclick="sendInvoice({{$o->id}})" class="btn btn-danger btn-xs" title="Lihat Invoice">
-                                <i class="bi bi-send-check-fill"></i> Kirim
+                                <i class="bi bi-send-check-fill"></i> Terkirim
                             </button>
                         @endif
 
                         @if($o->status == 'Sending')
-                            <button id="btn-paid-{{$o->id}}" onclick="paidInvoice({{$o->id}})" class="btn btn-warning btn-xs" title="Lihat Invoice">
+                            <button id="btn-paid-{{$o->id}}" onclick="paidInvoiceConfirm({{$o->id}})" class="btn btn-warning btn-xs" title="Lihat Invoice">
                                 <i class="bi bi-database-check"></i> Paid
                             </button>
                         @endif

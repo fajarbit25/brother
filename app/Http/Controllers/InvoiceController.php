@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExportsInvoice;
+use App\Models\AccountingApproval;
+use App\Models\CompanySaldo;
 use App\Models\Invoice;
+use App\Models\Operational;
+use App\Models\Opsitem;
 use App\Models\Order;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use SebastianBergmann\Exporter\Exporter;
@@ -103,21 +108,10 @@ class InvoiceController extends Controller
 
         $id = $request->id;
 
-        $invoice = Invoice::join('orders', 'orders.idorder', '=', 'invoices.order_id')
-                ->where('invoices.id', $id)->select('invoices.id', 'orders.invoice_id', 'invoices.file')->first();
-        
-        $order = Order::join('invoices', 'invoices.id', '=', 'orders.invoice_id')
-                ->where('orders.invoice_id', $invoice->invoice_id)
-                ->select('orders.idorder', 'invoices.id')->get();
-        
-
-        foreach($order as $items){
-            Invoice::where('order_id', $items->idorder)->update([
-                'status'    => 'Approved',
-                'file'      => $invoice->file,
-            ]);
-        }
-
+        $invoice = Invoice::findOrFail($request->id);
+        $invoice->update([
+            'status'    => 'Approved',
+        ]);
 
         return response()->json([
             'status'    => 200,
@@ -132,19 +126,10 @@ class InvoiceController extends Controller
 
         $id = $request->id;
 
-        $invoice = Invoice::join('orders', 'orders.idorder', '=', 'invoices.order_id')
-                ->where('invoices.id', $id)->select('invoices.id', 'orders.invoice_id', 'invoices.file')->first();
-        
-        $order = Order::join('invoices', 'invoices.id', '=', 'orders.invoice_id')
-                ->where('orders.invoice_id', $invoice->invoice_id)
-                ->select('orders.idorder', 'invoices.id')->get();
-
-        foreach($order as $item){
-   
-            Invoice::where('order_id', $item->idorder)->update([
-                'status'    => 'Sending',
-            ]);
-        }
+        $invoice = Invoice::findOrFail($request->id);
+        $invoice->update([
+            'status'    => 'Sending',
+        ]);
 
         return response()->json([
             'status'    => 200,
@@ -156,29 +141,73 @@ class InvoiceController extends Controller
     {
         $request->validate([
             'id'        => 'required',
+            'method'    => 'required',
         ]);
 
         $id = $request->id;
+        $method = $request->method;
 
-        $invoice = Invoice::join('orders', 'orders.idorder', '=', 'invoices.order_id')
-                ->where('invoices.id', $id)->select('invoices.id', 'orders.invoice_id', 'invoices.file')->first();
+        $invoice = Invoice::findOrFail($id);
         
-        $order = Order::join('invoices', 'invoices.id', '=', 'orders.invoice_id')
+        $order = Order::join('invoices', 'invoices.nomor', '=', 'orders.invoice_id')
                 ->where('orders.invoice_id', $invoice->invoice_id)
                 ->select('orders.idorder', 'invoices.id')->get();
+        
+        Invoice::where('nomor', $invoice->nomor)->update([
+                    'status'    => 'Paid',
+                    'payment_method'    => $method,
+                ]);
 
         foreach($order as $item){
-
-            Invoice::where('order_id', $item->idorder)->update([
-                'status'    => 'Paid',
-            ]);
-
             Order::where('idorder', $item->idorder)->update([
                 'status'            => 'Close',
                 'status_invoice'    => 'Paid',
                 'tag_invoice'       => 1,
             ]);
         }
+
+        /**Create Operational */
+        $akun = Opsitem::where('item', 'Jasa Invoice')->first();
+        $data = [
+            'trx_id'    => $invoice->nomor,
+            'tipe'      => 'IN',
+            'metode'    => $method,
+            'jenis'     => $akun->id,
+            'branch_id' => Auth::user()->branch_id,
+            'approved'  => 1,
+            'keterangan'=> 'Invoice Payment '.$invoice->nomor,
+            'status'    => 'Success',
+            'pesan'     => '-',
+            'user_id'   => Auth::user()->id,
+            'amount'    => $invoice->total_tagihan,
+            'saldo'     => 0,
+            'bukti_transaksi' => $invoice->file ?? '-',
+            'nomor_nota'=> '-',
+        ];
+        Operational::create($data);
+
+        /**Penambahan saldo */
+        $saldoData = CompanySaldo::where('tipe', $method)
+                ->where('branch_id', Auth::user()->branch_id)
+                ->first();
+        $companySaldo = CompanySaldo::findOrFail($saldoData->id);
+        $companySaldo->update([
+            'saldo'     => $saldoData->saldo + $invoice->total_tagihan,
+        ]);
+        /**End Of Penambahan saldo */
+
+        /**Create Approval */
+        AccountingApproval::create([
+            'branch'        => Auth::user()->branch_id,
+            'segment'       => 'Jasa Invoice',
+            'referensi_id'  => $invoice->nomor,
+            'tanggal'       => date('Y-m-d'),
+            'tipe'          => 'debit',
+            'payment_method'=> $method,
+            'amount'        => $invoice->total_tagihan,
+            'approval'      => 'new',
+            'akun_id'       => $akun->id,
+        ]);
 
         return response()->json([
             'status'    => 200,

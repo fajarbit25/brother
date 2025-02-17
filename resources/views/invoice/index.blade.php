@@ -226,7 +226,104 @@
 </div>
 <!-- /.modal -->
 
+<!-- Modal Jadwal -->
+<div class="modal fade" id="modal-invoice-paid">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Upload Invoice</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        
+          <input type="hidden" name="id_invoice_paid" id="id_invoice_paid">
+          <div class="form-group">
+            <label for="method"> Pilih Metode Pembayaran </label>
+            <select class="form-control" id="method">
+              <option value="">--Pilih--</option>
+              <option value="Cash">Cash</option>
+              <option value="BCA">BCA</option>
+              <option value="BRI">BRI</option>
+              <option value="Mandiri">Mandiri</option>
+            </select>
+          </div>
+
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-invoice-paid" onclick="paidInvoiceProses()">Proses Invoice</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 
 {{-- JS --}}
 <script src="{{asset('/assets/js/invoice.js')}}"></script>
+<script>
+  function paidInvoiceConfirm(id)
+  {
+      console.log(id)
+      $("#id_invoice_paid").val(id)
+      $("#modal-invoice-paid").modal('show');
+
+  }
+
+  function paidInvoiceProses()
+  {
+      $("#btn-invoice-paid").attr('disabled', true)
+      $("#btn-invoice-paid").html('<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading...')
+      var id = $("#id_invoice_paid").val();
+      var method = $("#method").val();
+
+      var url = "/invoice/paid";
+
+      console.log(id)
+      $.ajax({
+          url:url,
+          type:'POST',
+          cache:false,
+          data:{
+              id:id,
+              method:method,
+          },
+          success:function(response){
+              getOrder();
+
+              $("#btn-invoice-paid").attr('disabled', false)
+              $("#btn-invoice-paid").html('Proses Invoice')
+
+              $("#id_invoice_upload").val("")
+              $("#modal-invoice-paid").modal('hide');
+
+
+              /**Notifikasi */
+              $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Congrats',
+                  subtitle: 'Success',
+                  body: response.message
+              })
+          },
+          error:function(error){
+              console.log(error)
+              getOrder();
+              
+              /**Notifikasi */
+              $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Oops',
+                  subtitle: 'Error Message',
+                  body: 'Terjadi kesalahan!'
+              })
+          }
+      });
+  }
+</script>
 @endsection

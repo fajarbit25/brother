@@ -131,7 +131,7 @@
                     <th>Jenis Transaksi</th>
                     <th>Nomor Nota</th>
                     <th>Amount</th>
-                    <th>Saldo</th>
+                    <th>Creator</th>
                     <th>Metode</th>
                     <th>Keterangan</th>
                   </tr>

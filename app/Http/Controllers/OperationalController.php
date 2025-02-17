@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountingApproval;
 use App\Models\Cashbon;
+use App\Models\CompanySaldo;
 use App\Models\Operational;
 use App\Models\Opsitem;
 use App\Models\User;
@@ -47,11 +48,12 @@ class OperationalController extends Controller
         $bulan = date('m');
         $data = [
             'result'    => Operational::join('opsitems', 'opsitems.id', '=', 'operationals.jenis')
+                                        ->join('users', 'users.id', '=', 'operationals.user_id')
                                         ->whereMonth('operationals.updated_at', $bulan)
                                         ->where('tipe', 'IN')
                                         ->select('operationals.id as id', 'trx_id', 'operationals.created_at',
                                         'tipe', 'item', 'nomor_nota', 'amount', 'saldo', 'metode', 'keterangan',
-                                        'operationals.status_approval')
+                                        'operationals.status_approval', 'users.name')
                                         ->orderBy('operationals.created_at', 'DESC')->paginate(10),
         ];
         return view('operational.tableops', $data);
@@ -62,11 +64,12 @@ class OperationalController extends Controller
         $bulan = date('m');
         $data = [
             'result'    => Operational::join('opsitems', 'opsitems.id', '=', 'operationals.jenis')
+                                        ->join('users', 'users.id', '=', 'operationals.user_id')
                                         ->whereMonth('operationals.updated_at', $bulan)
                                         ->where('tipe', 'OUT')
                                         ->select('operationals.id as id', 'trx_id', 'operationals.created_at',
                                         'tipe', 'item', 'nomor_nota', 'amount', 'saldo', 'metode', 'keterangan',
-                                        'operationals.status_approval')
+                                        'operationals.status_approval', 'users.name')
                                         ->orderBy('operationals.created_at', 'DESC')->paginate(10),
         ];
         return view('operational.tableopsout', $data);
@@ -146,6 +149,16 @@ class OperationalController extends Controller
             'akun_id'       => $request->jenis,
         ]);
 
+        /**Pengurangan saldo */
+        $saldoData = CompanySaldo::where('tipe', $request->metode)
+                ->where('branch_id', Auth::user()->branch_id)
+                ->first();
+        $companySaldo = CompanySaldo::findOrFail($saldoData->id);
+        $companySaldo->update([
+            'saldo'     => $saldoData->saldo - $request->amount,
+        ]);
+        /**End Of Pengurangan saldo */
+
         return response()->json([
             'status'    => 200,
             'message'   => 'Submit Success..!'
@@ -201,6 +214,16 @@ class OperationalController extends Controller
             'approval'      => 'new',
             'akun_id'       => $request->jenis,
         ]);
+
+        /**Penambahan saldo */
+        $saldoData = CompanySaldo::where('tipe', $request->metode)
+                ->where('branch_id', Auth::user()->branch_id)
+                ->first();
+        $companySaldo = CompanySaldo::findOrFail($saldoData->id);
+        $companySaldo->update([
+            'saldo'     => $saldoData->saldo + $request->amount,
+        ]);
+        /**End Of Penambahan saldo */
 
         return response()->json([
             'status'    => 200,
@@ -274,23 +297,24 @@ class OperationalController extends Controller
     /**Saldo */
     public function saldoJson()
     {
-        $saldoTunai = Operational::where('branch_id', Auth::user()->branch_id)
-                                    ->where('metode', 'Cash')
-                                    ->orderBy('id', 'DESC')->first();
-        $saldoBCA = Operational::where('branch_id', Auth::user()->branch_id)
-                                    ->where('metode', 'BCA')
-                                    ->orderBy('id', 'DESC')->first();
-        $saldoMandiri = Operational::where('branch_id', Auth::user()->branch_id)
-                                    ->where('metode', 'Mandiri')
-                                    ->orderBy('id', 'DESC')->first();
-        $saldoBRI = Operational::where('branch_id', Auth::user()->branch_id)
-                                    ->where('metode', 'BRI')
-                                    ->orderBy('id', 'DESC')->first();
+        $saldoTunai = CompanySaldo::where('tipe', 'Cash')
+                        ->where('branch_id', Auth::user()->branch_id)
+                        ->first();
+        $saldoBCA = CompanySaldo::where('tipe', 'BCA')
+                        ->where('branch_id', Auth::user()->branch_id)
+                        ->first();
+        $saldoMandiri = CompanySaldo::where('tipe', 'Mandiri')
+                        ->where('branch_id', Auth::user()->branch_id)
+                        ->first();
+        $saldoBRI = CompanySaldo::where('tipe', 'BRI')
+                        ->where('branch_id', Auth::user()->branch_id)
+                        ->first();
         //deklarasi saldo
         $tunai = $saldoTunai->saldo ?? 0;
         $bca = $saldoBCA->saldo ?? 0;
         $mandiri = $saldoMandiri->saldo ?? 0;
         $bri = $saldoBRI->saldo ?? 0;
+
         $data = [
             'tunai'     => number_format($tunai),
             'bca'       => number_format($bca),
@@ -467,6 +491,20 @@ class OperationalController extends Controller
         ]);
         $mutasi = Operational::findOrFail($request->id);
         $mutasi->delete();
+
+        /**Pengurangan saldo */
+        $opsData = Operational::findOrFail($request->id);
+
+        $saldoData = CompanySaldo::where('tipe', $opsData->metode)
+                ->where('branch_id', $opsData->branch_id)
+                ->first();
+        $companySaldo = CompanySaldo::findOrFail($saldoData->id);
+        $companySaldo->update([
+            'saldo'     => $saldoData->saldo - $opsData->amount,
+        ]);
+        /**End Of Pengurangan saldo */
+        
+
         return response()->json([
             'status'    => 200,
             'message'   => 'Deleted',

@@ -31,7 +31,7 @@
         <td> {{$r->item}} </td>
         
         <td> {{number_format($r->amount)}} </td>
-        <td> {{number_format($r->saldo)}} </td>
+        <td> {{$r->name}} </td>
         <td>
             {{$r->metode}}
         </td>

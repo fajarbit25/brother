@@ -16,5 +16,7 @@ class Invoice extends Model
         'status', 
         'total_tagihan',
         'tag_active',
+        'nomor',
+        'payment_method',
     ];
 }

@@ -166,13 +166,30 @@
                                     <th>BCA</th>
                                     <th>
                                         @php
-                                            $debitBCA = $items->where('payment_method', 'BCA')->where('payment_type', 'debit')->groupBy('nota')->sum('amount') ?? 0;
-                                            $creditBCA = $items->where('payment_method', 'BCA')->where('payment_type', 'credit')->groupBy('nota')->sum('amount') ?? 0;
-                                            $totalBCA =  $debitBCA-$creditBCA;
+                                            // Menghitung total debit BCA berdasarkan nota dan jumlahkan 'amount'
+                                            $debitBCA = $items->where('payment_method', 'BCA')
+                                                              ->where('payment_type', 'debit')
+                                                              ->groupBy('nota')
+                                                              ->map(function($group) {
+                                                                  return $group->sum('amount');
+                                                              })->sum(); // Menjumlahkan hasil grup 'nota'
+                                            
+                                            // Menghitung total credit BCA berdasarkan nota dan jumlahkan 'amount'
+                                            $creditBCA = $items->where('payment_method', 'BCA')
+                                                               ->where('payment_type', 'credit')
+                                                               ->groupBy('nota')
+                                                               ->map(function($group) {
+                                                                   return $group->sum('amount');
+                                                               })->sum(); // Menjumlahkan hasil grup 'nota'
+                                
+                                            // Selisih debit dan credit
+                                            $totalBCA =  $debitBCA - $creditBCA;
                                         @endphp
-                                        Rp.{{number_format($totalBCA ?? 0)}},-
+                                
+                                        Rp.{{ number_format($totalBCA, 0, ',', '.') }},-
                                     </th>
                                 </tr>
+                                
                                 <tr>
                                     <th>MANDIRI</th>
                                     <th>

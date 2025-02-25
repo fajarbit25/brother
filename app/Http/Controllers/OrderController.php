@@ -46,7 +46,7 @@ class OrderController extends Controller
     {
          $load = Order::where('uuid', $id)->first();
         $data = [
-            'title'     => 'Detail Order BRO9842',
+            'title'     => 'Detail Order',
             'order'     => $load,
             'costumer'  => Costumer::where('idcostumer', $load->costumer_id)->first(),
             'teknisi'   => User::where('id', $load->teknisi)->first(),
@@ -391,8 +391,11 @@ class OrderController extends Controller
         /**update count order teknisi */
         $loadTeknisi = User::where('id', $load->teknisi)->first();
         $loadHelper = User::where('id', $load->helper)->first();
-        $countTeknisi = $loadTeknisi->teknisi_order_count-1;
-        $countHelper = $loadHelper->teknisi_order_count-1;
+
+        // Pastikan teknisi_order_count tidak null sebelum dikurangkan
+        $countTeknisi = ($loadTeknisi->teknisi_order_count ?? 0) - 1;
+        $countHelper = ($loadHelper->teknisi_order_count ?? 0) - 1;
+
 
         User::where('id', $loadTeknisi->id)->update(['teknisi_order_count' => $countTeknisi]);
         User::where('id', $loadHelper->id)->update(['teknisi_order_count' => $countHelper]);

@@ -175,6 +175,39 @@ class Approval extends Component
                             'approval'      => $this->statusApproval,
                         ]);
 
+                        /**Create Operational */
+                        $akun = Opsitem::where('item', 'Jasa Nota')->first();
+                        $totalPrice = $order->total_price - $order->discount ?? 0;
+                        $data = [
+                            'trx_id'    => $order->nomor_nota,
+                            'tipe'      => 'IN',
+                            'metode'    => $order->payment,
+                            'jenis'     => $akun->id,
+                            'branch_id' => Auth::user()->branch_id,
+                            'approved'  => 1,
+                            'keterangan'=> 'Nota Payment '.$order->nomor_nota,
+                            'status'    => 'Success',
+                            'pesan'     => '-',
+                            'user_id'   => Auth::user()->id,
+                            'amount'    => $totalPrice,
+                            'saldo'     => 0,
+                            'bukti_transaksi' => '-',
+                            'nomor_nota'=> '-',
+                            'status_approval'   => 'approved',
+                        ];
+                        Operational::create($data);
+
+                        /**Penambahan saldo */
+                        $saldoData = CompanySaldo::where('tipe', $order->payment)
+                                ->where('branch_id', Auth::user()->branch_id)
+                                ->first();
+                        $companySaldo = CompanySaldo::findOrFail($saldoData->id);
+                        $companySaldo->update([
+                            'saldo'     => $saldoData->saldo + $totalPrice,
+                        ]);
+                        /**End Of Penambahan saldo */
+
+
                         $this->emit('closeModal');
                         $this->reset('idApproval', 'idreferensi');
 

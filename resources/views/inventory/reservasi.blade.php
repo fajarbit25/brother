@@ -128,7 +128,7 @@
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Qty</th>
-                    <th>Harga</th>
+                    <th>HPP</th>
                     <th>Jumlah</th>
                     <th>Remove</th>
                   </tr>

@@ -568,8 +568,8 @@ class InventoryController extends Controller
 
         /**load product */
         $loadProduct = Products::where('diproduct', $request->product)->first();
-        $price = $loadProduct->harga_jual;
-        $total_price = $price*$request->qty;
+        $price = $loadProduct->harga_jual - $loadProduct->harga_beli;
+        $total_price = $price * $request->qty;
 
         /**load order */
         $loadOrder = Order::where('idorder', $request->order)->first();

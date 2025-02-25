@@ -331,6 +331,9 @@ public function material(): View
         $request->validate([
             'qty'   => 'required',
         ]);
+
+        $materialData = Products::findOrFail($request->idproduct);
+        $hppMaterial = $materialData->harga_jual - $materialData->harga_beli;
         
         $cek = Ordermaterial::where('order_id', $request->idorder)->where('product_id', $request->idproduct)->where('teknisi_id', Auth::user()->id)->get();
         if(count($cek) == 0){
@@ -339,8 +342,8 @@ public function material(): View
                 'product_id'    => $request->idproduct,
                 'teknisi_id'    => Auth::user()->id,
                 'qty'           => $request->qty,
-                'price'         => $request->price,
-                'jumlah'        => $request->qty*$request->price,
+                'price'         => $hppMaterial,
+                'jumlah'        => $request->qty*$hppMaterial,
             ]);
     
             /**update stock teknisi */
@@ -374,8 +377,8 @@ public function material(): View
                 'product_id'    => $request->idproduct,
                 'teknisi_id'    => Auth::user()->id,
                 'qty'           => number_format($request->qty),
-                'price'         => $request->price,
-                'jumlah'        => $request->qty*$request->price,
+                'price'         => $hppMaterial,
+                'jumlah'        => $request->qty*$hppMaterial,
             ]);
             
             

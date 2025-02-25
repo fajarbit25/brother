@@ -127,6 +127,15 @@
       <div class="modal-body">
         <form id="formItem">
           <div class="row">
+
+            <div class="alert alert-info col-sm-12">
+              <span class="fw-bold">Alert!.</span>
+              <ul>
+                <li> <span>Harga jasa adalah akumulasi dari ( Harga Jasa + HPP Material ) </span> </li>
+                <li> <span>Harga material yang tampil adalah HPP Material ( Harga Jual - Harga Beli )</span> </li>
+              </ul>
+            </div>
+
             <div class="col-sm-4">
               <div class="form-group">
                 <label>Type Order</label>
@@ -178,7 +187,7 @@
             </div><!-- /.col -->
             <div class="col-sm-4">
                 <div class="form-group">
-                  <label>Harga Jasa</label>
+                  <label>Total Harga</label>
                   <input type="number" name="price" id="price" class="form-control" required/>
                 </div>
             </div><!-- /.col --> 

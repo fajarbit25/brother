@@ -94,8 +94,8 @@
                 $("#stockMaterial").html(data.stock)
                 $("#satuanMaterial").html(data.satuan)
                 $("#price").val(data.price)
-                if(data.stock < 0){
-                    $("#btn-add-material").attr('disabled', true)
+                if(data.stock <= 0){
+                    $("#btn-add-material").attr('disabled', false)
                     $("#btn-add-material").addClass('btn btn-secondary float-right')
                 }else if(data.stock > 0){
                     $("#btn-add-material").attr('disabled', false)

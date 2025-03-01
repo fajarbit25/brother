@@ -227,12 +227,12 @@
               </thead>
               <tbody>
                 @foreach ($dataItems as $item)
-                <tr>
-                  <td> {{$loop->iteration}} </td>
-                  <td> {{$item->item_name.' - '.$item->merk.' '.$item->pk}} </td>
-                  <td> {{ number_format($item->qty) }} </td>
-                  <td> {{ number_format($item->price) }} </td>
-                </tr>
+                  <tr>
+                    <td> {{$loop->iteration}} </td>
+                    <td> {{$item->item_name.' - '.$item->merk.' '.$item->pk}} </td>
+                    <td> {{ number_format($item->qty) }} </td>
+                    <td> {{ number_format($item->price) }} </td>
+                  </tr>
                 @endforeach
               </tbody>
             </table>

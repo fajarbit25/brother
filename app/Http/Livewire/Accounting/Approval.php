@@ -32,6 +32,10 @@ class Approval extends Component
     public $dataItems;
     public $dataMaterial;
 
+    public $nomorNota;
+    public $costumerName;
+    public $costumerPhone;
+
     public function render()
     {
         $this->getItems();
@@ -439,9 +443,6 @@ class Approval extends Component
         }
     }
 
-    public $nomorNota;
-    public $costumerName;
-    public $costumerPhone;
     public function modalReviewNota($id)
     {
 

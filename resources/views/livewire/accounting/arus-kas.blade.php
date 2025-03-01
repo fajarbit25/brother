@@ -169,16 +169,13 @@
                                             // Menghitung total debit BCA berdasarkan nota dan jumlahkan 'amount'
                                             $debitBCA = $items->where('payment_method', 'BCA')
                                                               ->where('payment_type', 'debit')
-                                                              ->map(function($group) {
-                                                                  return $group->sum('amount');
-                                                              })->sum(); // Menjumlahkan hasil grup 'nota'
+                                                              ->sum('amount') ?? 0;
+                                                               // Menjumlahkan hasil grup 'nota'
                                             
                                             // Menghitung total credit BCA berdasarkan nota dan jumlahkan 'amount'
                                             $creditBCA = $items->where('payment_method', 'BCA')
                                                                ->where('payment_type', 'credit')
-                                                               ->map(function($group) {
-                                                                   return $group->sum('amount');
-                                                               })->sum(); // Menjumlahkan hasil grup 'nota'
+                                                               ->sum('amount') ?? 0;
                                 
                                             // Selisih debit dan credit
                                             $totalBCA =  $debitBCA - $creditBCA;

@@ -25,14 +25,16 @@ class ArusKas extends Component
     public function render()
     {
         // Tentukan tanggal 25 bulan ini
-        $tanggal = Carbon::now()->startOfMonth()->addDays(24); // 25 hari dari awal bulan ini
-        
-        // Kurangi 1 bulan dari tanggal tersebut
-        $tanggalSebelumnya = $tanggal->subMonth();
+$tanggal = Carbon::now()->startOfMonth()->addDays(24); // 25 hari dari awal bulan ini
 
-        $this->start = $tanggalSebelumnya->format('Y-m-d');
-        $this->end = $tanggal->format('Y-m-d');
-        
+// Tentukan tanggal 25 bulan sebelumnya
+$tanggalSebelumnya = $tanggal->copy()->subMonth(); // Salin tanggal dan kurangi 1 bulan
+
+// Format tanggal
+$this->start = $tanggalSebelumnya->format('Y-m-d');
+$this->end = $tanggal->format('Y-m-d');
+
+
         $this->getAkun();
         $this->getItems();
 

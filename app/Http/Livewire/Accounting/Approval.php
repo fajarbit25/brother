@@ -12,6 +12,7 @@ use App\Models\Operational;
 use App\Models\Opsitem;
 use App\Models\Order;
 use App\Models\Orderitem;
+use App\Models\Ordermaterial;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -28,6 +29,8 @@ class Approval extends Component
     public $idApproval;
     public $idreferensi;
     public $statusApproval;
+    public $dataItems;
+    public $dataMaterial;
 
     public function render()
     {
@@ -122,29 +125,33 @@ class Approval extends Component
                         $akun = Opsitem::findOrFail($data->akun_id);
 
                         $items = Orderitem::join('items', 'items.iditem', '=', 'orderitems.item_id')
-                                ->where('order_id', $order->uuid)->select('items.item_name', 'orderitems.merk', 'orderitems.pk', 'orderitems.qty')
+                                ->where('order_id', $order->uuid)->select('items.item_name', 'orderitems.merk',
+                                 'orderitems.pk', 'orderitems.qty', 'orderitems.price')
                                 ->get();
 
-                        $saldo = AccountingSaldo::where('branch_id', Auth::user()->branch_id)->first();
+                       
 
-
-                        if ($data->tipe == 'debit') {
-                            $saldoAkhir = $saldo->saldo_akhir+$data->amount;
-                        }
-                        if ($data->tipe == 'credit') {
-                            $saldoAkhir = $saldo->saldo_akhir-$data->amount;
-                        }
-
-                        if ($data->payment_method == 'Cash' && $data->tipe == 'debit') {
-                            $pettyKhas = $saldo->petty_cash+$data->amount;
-                        } elseif ($data->payment_method == 'Cash' && $data->tipe == 'credit') {
-                            $pettyKhas = $saldo->petty_cash-$data->amount;
-                        } else {
-                            $pettyKhas = $saldo->petty_cash;
-                        }
 
                         //create arus khas
                         foreach ($items as $item) {
+
+                            $saldo = AccountingSaldo::where('branch_id', Auth::user()->branch_id)->first();
+
+                            if ($data->tipe == 'debit') {
+                                $saldoAkhir = $saldo->saldo_akhir+$item->price;
+                            }
+                            if ($data->tipe == 'credit') {
+                                $saldoAkhir = $saldo->saldo_akhir-$item->price;
+                            }
+    
+                            if ($data->payment_method == 'Cash' && $data->tipe == 'debit') {
+                                $pettyKhas = $saldo->petty_cash+$item->price;
+                            } elseif ($data->payment_method == 'Cash' && $data->tipe == 'credit') {
+                                $pettyKhas = $saldo->petty_cash-$item->price;
+                            } else {
+                                $pettyKhas = $saldo->petty_cash;
+                            }
+
                             AccountingArusKhas::create([
                                 'branch_id'         => Auth::user()->branch_id,
                                 'tanggal'           => $data->tanggal,
@@ -154,20 +161,24 @@ class Approval extends Component
                                 'qty'               => $item->qty,
                                 'payment_method'    => $data->payment_method,
                                 'payment_type'      => $data->tipe,
-                                'amount'            => $data->amount,
+                                'amount'            => $item->price,
                                 'akun_id'           => $akun->id, //from ops item table
                                 'klasifikasi'       => $akun->category,
                                 'petty_cash'        => $pettyKhas,
                                 'saldo'             => $saldoAkhir,
                             ]);
+
+
+                            //update Saldo
+                            AccountingSaldo::where('branch_id', Auth::user()->branch_id)
+                            ->update([
+                                'petty_cash'    => $pettyKhas,
+                                'saldo_akhir'   => $saldoAkhir,
+                            ]);
+
                         }
 
-                        //update Saldo
-                        AccountingSaldo::where('branch_id', Auth::user()->branch_id)
-                                ->update([
-                                    'petty_cash'    => $pettyKhas,
-                                    'saldo_akhir'   => $saldoAkhir,
-                                ]);
+                        
 
                         //update Approval
                         AccountingApproval::where('id', $approvalData->id)
@@ -426,5 +437,34 @@ class Approval extends Component
         } else {
             session()->flash('warning', 'Referensi Id tidak tidak ditemukan!');
         }
+    }
+
+    public $nomorNota;
+    public $costumerName;
+    public $costumerPhone;
+    public function modalReviewNota($id)
+    {
+
+        $this->nomorNota = $id;
+        $order = Order::join('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
+                ->where('nomor_nota', $this->nomorNota)
+                ->select('orders.*', 'costumers.costumer_name', 'costumers.costumer_phone')
+                ->first();
+
+        $query = OrderItem::join('items', 'items.iditem', '=', 'orderitems.item_id')
+                ->where('order_id', $order->uuid)
+                ->select('orderitems.*', 'items.item_name')
+                ->get();
+        $this->dataItems = $query;
+
+        $queryMaterial = Ordermaterial::join('products', 'products.diproduct', '=', 'ordermaterials.product_id')
+                        ->where('order_id', $order->idorder)
+                        ->select('ordermaterials.*', 'products.product_name')
+                        ->get();
+        $this->dataMaterial = $queryMaterial;
+
+        $this->costumerName = $order->costumer_name ?? '-';
+        $this->costumerPhone = $order->costumer_phone ?? '';
+        $this->emit('modalReview');
     }
 }

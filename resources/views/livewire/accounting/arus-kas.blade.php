@@ -169,7 +169,6 @@
                                             // Menghitung total debit BCA berdasarkan nota dan jumlahkan 'amount'
                                             $debitBCA = $items->where('payment_method', 'BCA')
                                                               ->where('payment_type', 'debit')
-                                                              ->groupBy('nota')
                                                               ->map(function($group) {
                                                                   return $group->sum('amount');
                                                               })->sum(); // Menjumlahkan hasil grup 'nota'
@@ -177,7 +176,6 @@
                                             // Menghitung total credit BCA berdasarkan nota dan jumlahkan 'amount'
                                             $creditBCA = $items->where('payment_method', 'BCA')
                                                                ->where('payment_type', 'credit')
-                                                               ->groupBy('nota')
                                                                ->map(function($group) {
                                                                    return $group->sum('amount');
                                                                })->sum(); // Menjumlahkan hasil grup 'nota'
@@ -194,8 +192,8 @@
                                     <th>MANDIRI</th>
                                     <th>
                                         @php
-                                            $debitMandiri = $items->where('payment_method', 'Mandiri')->where('payment_type', 'debit')->groupBy('nota')->sum('amount') ?? 0;
-                                            $creditMandiri = $items->where('payment_method', 'Mandiri')->where('payment_type', 'credit')->groupBy('nota')->sum('amount') ?? 0;
+                                            $debitMandiri = $items->where('payment_method', 'Mandiri')->where('payment_type', 'debit')->sum('amount') ?? 0;
+                                            $creditMandiri = $items->where('payment_method', 'Mandiri')->where('payment_type', 'credit')->sum('amount') ?? 0;
                                             $totalMandiri = $debitMandiri-$creditMandiri;
                                         @endphp
                                         Rp.{{number_format($totalMandiri ?? 0)}},-
@@ -205,8 +203,8 @@
                                     <th>BRI</th>
                                     <th>
                                         @php
-                                            $debitBRI = $items->where('payment_method', 'BRI')->where('payment_type', 'debit')->groupBy('nota')->sum('amount') ?? 0;
-                                            $creditBRI = $items->where('payment_method', 'BRI')->where('payment_type', 'credit')->groupBy('nota')->sum('amount') ?? 0;
+                                            $debitBRI = $items->where('payment_method', 'BRI')->where('payment_type', 'debit')->sum('amount') ?? 0;
+                                            $creditBRI = $items->where('payment_method', 'BRI')->where('payment_type', 'credit')->sum('amount') ?? 0;
                                             $totalBRI =  $debitBRI-$creditBRI;
                                         @endphp
                                         Rp.{{number_format($totalBRI ?? 0)}},-
@@ -216,8 +214,8 @@
                                     <th>CASH</th>
                                     <th>
                                         @php
-                                            $debitCash = $items->where('payment_method', 'Cash')->where('payment_type', 'debit')->groupBy('nota')->sum('amount') ?? 0;
-                                            $creditCash = $items->where('payment_method', 'Cash')->where('payment_type', 'credit')->groupBy('nota')->sum('amount') ?? 0;
+                                            $debitCash = $items->where('payment_method', 'Cash')->where('payment_type', 'debit')->sum('amount') ?? 0;
+                                            $creditCash = $items->where('payment_method', 'Cash')->where('payment_type', 'credit')->sum('amount') ?? 0;
                                             $totalCash =  $debitCash-$creditCash;
                                         @endphp
                                         Rp.{{number_format($totalCash ?? 0)}},-

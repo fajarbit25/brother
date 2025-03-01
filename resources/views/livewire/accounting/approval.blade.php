@@ -51,7 +51,15 @@
                                     <td> {{$loop->iteration}} </td>
                                     <td> {{$item->tanggal}} </td>
                                     <td> {{$item->segment}} </td>
-                                    <td> {{$item->referensi_id}} </td>
+                                    <td> 
+                                      @if ($item->segment == 'Nota')
+                                        <a href="javascript:void(0)" wire:click="modalReviewNota({{$item->referensi_id}})">
+                                          {{$item->referensi_id}} 
+                                        </a>
+                                      @else 
+                                          {{$item->referensi_id}} 
+                                      @endif
+                                    </td>
                                     <td> {{$item->payment_method}} </td>
                                     <td> {{$item->tipe}} </td>
                                     <td> Rp.{{number_format($item->amount)}},- </td>
@@ -184,12 +192,103 @@
     </div>
     <!-- /.modal -->
 
+    <!-- Modal Filter -->
+    <div class="modal fade" id="modalReview" wire:ignore.self>
+      <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title">Detail Transaksi [{{ $nomorNota }}]</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+          
+            @if ($dataItems)
+            <table class="table table-bordered" style="font-size: 13px;">
+              <tr>
+                <th style="width: 20%;">Costumer Name</th>
+                <th>: {{$costumerName}} </th>
+              </tr>
+              <tr>
+                <th style="width: 20%;">Costumer PIC</th>
+                <th>: {{$costumerPhone}} </th>
+              </tr>
+            </table>
+            <span class="fw-bold mt-3">Detail Jasa</span>
+            <table class="table table-bordered" style="font-size: 13px;">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Item</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($dataItems as $item)
+                <tr>
+                  <td> {{$loop->iteration}} </td>
+                  <td> {{$item->item_name.' - '.$item->merk.' '.$item->pk}} </td>
+                  <td> {{ number_format($item->qty) }} </td>
+                  <td> {{ number_format($item->price) }} </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+
+            <span class="fw-bold mt-3">Detail Material</span>
+            <table class="table table-bordered" style="font-size: 13px;">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Name</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Jumlah</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if ($dataMaterial->count() != 0)
+                @foreach ($dataMaterial as $material)
+                <tr>
+                  <td> {{$loop->iteration}} </td>
+                  <td> {{$material->product_name}} </td>
+                  <td> {{ number_format($material->qty) }} </td>
+                  <td> {{ number_format($material->price) }} </td>
+                  <td> {{ number_format($material->jumlah) }}</td>
+                </tr>
+                @endforeach
+                @else 
+                <tr>
+                  <td colspan="5"> Tidak ada penggunaan Material </td>
+                </tr>
+                @endif
+              </tbody>
+            </table>
+            @endif
+          
+          </div>
+          <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          </div>
+      </div>
+      <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+  <!-- /.modal -->
+
   @push('scripts')
       <script>
         document.addEventListener('livewire:load', function () {
 
             Livewire.on('modalFilter',function () {
-               $("#modalFilter").modal('show');
+               $("#modalFilter").modal('show')
+            });
+
+            Livewire.on('modalReview', function () {
+              $("#modalReview").modal('show')
             });
 
             Livewire.on('modalApproval', function () {
@@ -197,8 +296,9 @@
             });
 
             Livewire.on('closeModal', function () {
-                $("#modalFilter").modal('hide');
+                $("#modalFilter").modal('hide')
                 $("#modalApproval").modal('hide')
+                $("#modalReview").modal('hide')
             });
         });
       </script>

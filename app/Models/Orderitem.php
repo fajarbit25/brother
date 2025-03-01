@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Orderitem extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'odoi';
+    protected $primaryKey = 'idoi';
     protected $fillable = [
         'order_id',
         'merk',

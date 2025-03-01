@@ -469,4 +469,10 @@ class Approval extends Component
         $this->costumerPhone = $order->costumer_phone ?? '';
         $this->emit('modalReview');
     }
+
+    public function resetDetail()
+    {
+        $this->reset('nomorNota', 'costumerName', 'costumerPhone');
+        $this->emit('closeModal');
+    }
 }

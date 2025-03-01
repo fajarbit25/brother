@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Accounting;
 
 use App\Models\AccountingArusKhas;
 use App\Models\Opsitem;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,6 +24,15 @@ class ArusKas extends Component
 
     public function render()
     {
+        // Tentukan tanggal 25 bulan ini
+        $tanggal = Carbon::now()->startOfMonth()->addDays(24); // 25 hari dari awal bulan ini
+        
+        // Kurangi 1 bulan dari tanggal tersebut
+        $tanggalSebelumnya = $tanggal->subMonth();
+
+        $this->start = $tanggalSebelumnya->format('Y-m-d');
+        $this->end = $tanggal->format('Y-m-d');
+        
         $this->getAkun();
         $this->getItems();
 

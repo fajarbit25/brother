@@ -181,7 +181,7 @@
                                             $totalBCA =  $debitBCA - $creditBCA;
                                         @endphp
                                 
-                                        Rp.{{ number_format($totalBCA, 0, ',', '.') }},-
+                                        Rp.{{ number_format($totalBCA ?? 0) }},-
                                     </th>
                                 </tr>
                                 

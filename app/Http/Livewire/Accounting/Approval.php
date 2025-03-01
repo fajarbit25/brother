@@ -445,6 +445,8 @@ class Approval extends Component
     public function modalReviewNota($id)
     {
 
+        $this->reset('nomorNota', 'costumerName', 'costumerPhone');
+
         $this->nomorNota = $id;
         $order = Order::join('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
                 ->where('nomor_nota', $this->nomorNota)

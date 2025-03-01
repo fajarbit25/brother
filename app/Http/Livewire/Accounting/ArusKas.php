@@ -22,19 +22,22 @@ class ArusKas extends Component
     public $method;
     public $tipe;
 
-    public function render()
+
+    public function mount()
     {
         // Tentukan tanggal 25 bulan ini
-$tanggal = Carbon::now()->startOfMonth()->addDays(24); // 25 hari dari awal bulan ini
+        $tanggal = Carbon::now()->startOfMonth()->addDays(24); // 25 hari dari awal bulan ini
 
-// Tentukan tanggal 25 bulan sebelumnya
-$tanggalSebelumnya = $tanggal->copy()->subMonth(); // Salin tanggal dan kurangi 1 bulan
+        // Tentukan tanggal 25 bulan sebelumnya
+        $tanggalSebelumnya = $tanggal->copy()->subMonth(); // Salin tanggal dan kurangi 1 bulan
 
-// Format tanggal
-$this->start = $tanggalSebelumnya->format('Y-m-d');
-$this->end = $tanggal->format('Y-m-d');
+        // Format tanggal
+        $this->start = $tanggalSebelumnya->format('Y-m-d');
+        $this->end = $tanggal->format('Y-m-d');
+    }
 
-
+    public function render()
+    {
         $this->getAkun();
         $this->getItems();
 

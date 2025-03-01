@@ -454,7 +454,7 @@ class Approval extends Component
                 ->first();
 
         $query = OrderItem::join('items', 'items.iditem', '=', 'orderitems.item_id')
-                ->where('order_id', $order->uuid)
+                ->where('orderitems.order_id', $order->uuid)
                 ->select('orderitems.*', 'items.item_name')
                 ->get();
         $this->dataItems = $query;

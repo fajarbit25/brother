@@ -460,7 +460,7 @@ class Approval extends Component
 
         $queryMaterial = Ordermaterial::join('products', 'products.diproduct', '=', 'ordermaterials.product_id')
                         ->where('order_id', $order->idorder)
-                        ->select('ordermaterials.*', 'products.product_name')
+                        ->select('ordermaterials.*', 'products.product_name', 'products.harga_jual')
                         ->get();
         $this->dataMaterial = $queryMaterial;
 

@@ -15,5 +15,6 @@ class Ordermaterial extends Model
         'qty',
         'price',
         'jumlah',
+        'hpp',
     ];
 }

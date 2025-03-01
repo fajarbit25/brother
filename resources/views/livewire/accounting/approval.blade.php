@@ -243,8 +243,9 @@
                 <tr>
                   <th>No</th>
                   <th>Name</th>
+                  <th>Harga Jual</th>
                   <th>Qty</th>
-                  <th>Price</th>
+                  <th>HPP</th>
                   <th>Jumlah</th>
                 </tr>
               </thead>
@@ -254,6 +255,7 @@
                 <tr>
                   <td> {{$loop->iteration}} </td>
                   <td> {{$material->product_name}} </td>
+                  <td> {{ number_format($material->harga_jual) }} </td>
                   <td> {{ number_format($material->qty) }} </td>
                   <td> {{ number_format($material->price) }} </td>
                   <td> {{ number_format($material->jumlah) }}</td>
@@ -261,7 +263,7 @@
                 @endforeach
                 @else 
                 <tr>
-                  <td colspan="5"> Tidak ada penggunaan Material </td>
+                  <td colspan="6"> Tidak ada penggunaan Material </td>
                 </tr>
                 @endif
               </tbody>

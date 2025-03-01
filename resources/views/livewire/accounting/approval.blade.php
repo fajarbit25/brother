@@ -53,7 +53,7 @@
                                     <td> {{$item->segment}} </td>
                                     <td> 
                                       @if ($item->segment == 'Nota')
-                                        <a href="javascript:void(0)" wire:click="modalReviewNota({{$item->referensi_id}})">
+                                        <a href="javascript:void(0)" wire:click="modalReviewNota('{{$item->referensi_id}}')">
                                           {{$item->referensi_id}} 
                                         </a>
                                       @else 

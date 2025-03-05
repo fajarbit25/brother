@@ -60,3 +60,27 @@
     </ul>
 </li>
 {{-- End Operational Nav --}}
+
+{{-- Operational Nav --}}
+<li class="nav-item" id="invoice">
+  <a href="#" class="nav-link">
+      <i class="bi bi-receipt"></i>
+      <p>
+      Invoice
+      <i class="right fas fa-angle-left"></i>
+      </p>
+  </a>
+  <ul class="nav nav-treeview">
+      <li class="nav-item">
+      <a href="/invoice" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>Invoice Unpaid</p>
+      </a>
+      <a href="/invoice/report" class="nav-link">
+          <i class="bi bi-chevron-compact-right"></i>
+          <p>Report Invoice</p>
+      </a>
+      </li>
+  </ul>
+</li>
+{{-- End Inventory Nav --}}

@@ -281,5 +281,5 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-<script src="{{asset('/assets/js/ops.js')}}"></script>
+<script src="{{asset('/assets/js/ops.js?v1.'.time())}}"></script>
 @endsection

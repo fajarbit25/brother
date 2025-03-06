@@ -17,7 +17,7 @@ class InvoiceMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->privilege == 1 || Auth::user()->privilege == 2){
+        if(Auth::user()->privilege == 1 || Auth::user()->privilege == 2 || Auth::user()->privilege == 8){
             return $next($request);
         }
 

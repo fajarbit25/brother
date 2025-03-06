@@ -489,8 +489,6 @@ class OperationalController extends Controller
         $request->validate([
             'id'    => 'required',    
         ]);
-        $mutasi = Operational::findOrFail($request->id);
-        $mutasi->delete();
 
         /**Pengurangan saldo */
         $opsData = Operational::findOrFail($request->id);
@@ -503,6 +501,9 @@ class OperationalController extends Controller
             'saldo'     => $saldoData->saldo - $opsData->amount,
         ]);
         /**End Of Pengurangan saldo */
+
+        $mutasi = Operational::findOrFail($request->id);
+        $mutasi->delete();
         
 
         return response()->json([

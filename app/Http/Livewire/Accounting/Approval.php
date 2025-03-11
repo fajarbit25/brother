@@ -82,9 +82,9 @@ class Approval extends Component
 
     public function submitApproval()
     {
-        $this->validate([
-            'idreferensi'   => 'required',
-        ]);
+        // $this->validate([
+        //     'idreferensi'   => 'required',
+        // ]);
 
         //cek idreferensi 
         $approvalData = AccountingApproval::find($this->idApproval);

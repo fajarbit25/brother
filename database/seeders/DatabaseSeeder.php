@@ -142,14 +142,5 @@ class DatabaseSeeder extends Seeder
         Opsitem::create(['item' => 'Komsumsi']);
         Opsitem::create(['item' => 'Kebutuhan Kantor']);
         Opsitem::create(['item' => 'Lainnya']);
-
-        Merk::create(['merk_name' => 'Daikin']);
-        Merk::create(['merk_name' => 'LG']);
-        Merk::create(['merk_name' => 'Panasonic']);
-        Merk::create(['merk_name' => 'Sharp']);
-        Merk::create(['merk_name' => 'Midea']);
-        Merk::create(['merk_name' => 'Samsung']);
-
-
     }
 }

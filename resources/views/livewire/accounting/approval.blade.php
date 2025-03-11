@@ -169,10 +169,10 @@
                 @error('statusApproval') <span class="text-danger fw-bold"> Status wajib diisi! </span> @enderror
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="idreferensi">Id Referensi</label>
                 <input type="text" class="form-control @error('idreferensi') is-invalid @enderror" wire:model="idreferensi" placeholder="Masukan ref id untuk melakukan approval">
-            </div>
+            </div> -->
 
             @if (session('warning'))
             <div class="alert alert-warning">

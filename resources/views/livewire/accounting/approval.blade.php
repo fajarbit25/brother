@@ -65,7 +65,7 @@
                                     <td> Rp.{{number_format($item->amount)}},- </td>
                                     <td>
                                         @if ($item->approval == 'new')
-                                        <button type="button" class="btn btn-primary btn-xs" wire:click="modalApproval({{$item->id}})"> <i class="bi bi-asterisk"></i> {{$item->approval}} </button>
+                                        <button type="button" class="btn btn-primary btn-xs" wire:click="modalApproval({{$item->id}}, {{$item->referensi_id}})"> <i class="bi bi-asterisk"></i> {{$item->approval}} </button>
                                         @endif
 
                                         @if ($item->approval == 'rejected')
@@ -169,10 +169,13 @@
                 @error('statusApproval') <span class="text-danger fw-bold"> Status wajib diisi! </span> @enderror
             </div>
 
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <label for="idreferensi">Id Referensi</label>
-                <input type="text" class="form-control @error('idreferensi') is-invalid @enderror" wire:model="idreferensi" placeholder="Masukan ref id untuk melakukan approval">
-            </div> -->
+                <input type="text" class="form-control @error('idreferensi') is-invalid @enderror" 
+                wire:model="idreferensi" 
+                placeholder="Masukan ref id untuk melakukan approval"
+                readonly>
+            </div>
 
             @if (session('warning'))
             <div class="alert alert-warning">

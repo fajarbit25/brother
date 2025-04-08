@@ -74,9 +74,10 @@ class Approval extends Component
         $this->emit('modalFilter');
     }
 
-    public function modalApproval($id)
+    public function modalApproval($id, $reverensiId)
     {
         $this->idApproval = $id;
+        $this->idreferensi = $reverensiId;
         $this->emit('modalApproval');
     }
 
@@ -87,6 +88,7 @@ class Approval extends Component
         // ]);
 
         //cek idreferensi 
+
         $approvalData = AccountingApproval::find($this->idApproval);
 
         if ($approvalData->segment == 'Nota') {

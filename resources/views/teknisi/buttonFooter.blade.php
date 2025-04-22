@@ -6,9 +6,7 @@
         @else
             @if($countMaterialApprove == 0)
 
-                @if($materialUse >= $materialRequest)
-                        <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button>
-                @endif
+                <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button>
 
             @endif
         @endif

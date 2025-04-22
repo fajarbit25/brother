@@ -7,9 +7,7 @@
             @if($countMaterialApprove == 0)
 
                 @if($materialUse >= $materialRequest)
-                    @if($countItemUnprocess == 0)
                         <button class="btn btn-success btn-sm float-right" id="modalUpload"><i class="bi bi-check-circle"></i> Closing</button>
-                    @endif
                 @endif
 
             @endif

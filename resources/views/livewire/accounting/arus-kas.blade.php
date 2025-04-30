@@ -160,7 +160,12 @@
                         <div class="col-sm-4 mt-3">
                             <table class="table table-bordered" style="font-size: 12px;">
                                 <tr class="bg-light">
-                                    <th colspan="2">RINCIAN SALDO</th>
+                                    <th colspan="3">RINCIAN SALDO</th>
+                                </tr>
+                                <tr class="bg-light">
+                                    <th>Account</th>
+                                    <th>Saldo Of The Month</th>
+                                    <th>Total Saldo</th>
                                 </tr>
                                 <tr>
                                     <th>BCA</th>
@@ -183,6 +188,8 @@
                                 
                                         Rp.{{ number_format($totalBCA ?? 0) }},-
                                     </th>
+
+                                    <th> Rp.{{number_format($saldoBCA)}},- </th>
                                 </tr>
                                 
                                 <tr>
@@ -195,6 +202,7 @@
                                         @endphp
                                         Rp.{{number_format($totalMandiri ?? 0)}},-
                                     </th>
+                                    <th> Rp.{{number_format($saldoMandiri)}},- </th>
                                 </tr>
                                 <tr>
                                     <th>BRI</th>
@@ -206,6 +214,7 @@
                                         @endphp
                                         Rp.{{number_format($totalBRI ?? 0)}},-
                                     </th>
+                                    <th> Rp.{{number_format($saldoBRI)}},- </th>
                                 </tr>
                                 <tr>
                                     <th>CASH</th>
@@ -217,12 +226,14 @@
                                         @endphp
                                         Rp.{{number_format($totalCash ?? 0)}},-
                                     </th>
+                                    <th> Rp.{{number_format($saldoCash)}},- </th>
                                 </tr>
                                 <tr>
                                     <th class="bg-light">GRAND TOTAL</th>
                                     <th class="bg-light">
                                         Rp. {{ number_format($totalBCA+$totalMandiri+$totalBRI+$totalCash ?? 0) }},-
                                     </th>
+                                    <th class="bg-light"> Rp.{{number_format($saldoTotal)}},- </th>
                                 </tr>
                             </table>
                         </div>

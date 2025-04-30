@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Accounting;
 
 use App\Models\AccountingArusKhas;
+use App\Models\CompanySaldo;
 use App\Models\Opsitem;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,11 @@ class ArusKas extends Component
     public $method;
     public $tipe;
 
+    public $saldoCash;
+    public $saldoBRI;
+    public $saldoBCA;
+    public $saldoMandiri;
+    public $saldoTotal;
 
     public function mount()
     {
@@ -40,6 +46,7 @@ class ArusKas extends Component
     {
         $this->getAkun();
         $this->getItems();
+        $this->getTotalSaldo();
 
         return view('livewire.accounting.arus-kas', [
             'items'     => $this->items,
@@ -81,5 +88,27 @@ class ArusKas extends Component
     public function getAkun()
     {
         $this->dataAkun = Opsitem::all();
+    }
+
+    public function getTotalSaldo()
+    {
+        $query = CompanySaldo::where('branch_id', Auth::user()->branch_id)
+                ->select('tipe', 'saldo')->get();
+        
+        $cash = $query->where('tipe', 'Cash')->first();
+        $this->saldoCash = $cash ? $cash->saldo : 0;
+
+        $bri = $query->where('tipe', 'BRI')->first();
+        $this->saldoBRI = $bri ? $bri->saldo : 0;
+
+        $bca = $query->where('tipe', 'BCA')->first();
+        $this->saldoBCA = $bca ? $bca->saldo : 0;
+
+        $mandiri = $query->where('tipe', 'Mandiri')->first();
+        $this->saldoMandiri = $mandiri ? $mandiri->saldo : 0;
+
+        $this->saldoTotal = $this->saldoTotal = $query->sum('saldo') ?? 0;
+
+                
     }
 }

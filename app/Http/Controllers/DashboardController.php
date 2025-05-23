@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\DailyIncomeChart;
 use App\Charts\DailyOrderChart;
 use App\Models\Asset;
 use App\Models\Attendance;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index(DailyOrderChart $chart)//:view
+    public function index(DailyOrderChart $chart, DailyIncomeChart $incomeChart)//:view
     {
         if(Auth::user()->privilege == 9){
             return redirect('/teknisi');
@@ -34,6 +35,7 @@ class DashboardController extends Controller
             'notif_inv'   => Invoice::where('status', 'Review')->count(),
             'asset'     => $asset,
             'chart'     => $chart->build(),
+            'chartIncome'=> $incomeChart->build(),
         ];
 
         return view('dashboard', $data);

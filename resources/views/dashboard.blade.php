@@ -153,6 +153,38 @@
         </div>
         <!-- /.col -->
 
+
+        <div class="col-md-12">
+
+          <!-- TABLE: LATEST ORDERS -->
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Chart Total Transaksi</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0" style="color: black;">
+              {!! $chartIncome->container() !!}
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              
+            </div>
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+
         <div class="col-md-12">
 
           <!-- TABLE: LATEST ORDERS -->
@@ -214,4 +246,5 @@
 <script src="{{ $chart->cdn() }}"></script>
 
 {{ $chart->script() }}
+{{ $chartIncome->script() }}
 @endsection

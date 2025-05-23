@@ -9,6 +9,8 @@ use App\Models\Inbound;
 use App\Models\Inbounditem;
 use App\Models\Mutation;
 use App\Models\Order;
+use App\Models\Orderitem;
+use App\Models\Ordermaterial;
 use App\Models\Outbound;
 use App\Models\Outboundbranch;
 use App\Models\Outbounditem;
@@ -444,7 +446,7 @@ class InventoryController extends Controller
     {
         $request->validate([
             'product_name'  => 'required',
-            'harga_jual'    => 'required',
+            'harga_beli'    => 'required',
         ]); 
 
         /**Generate Kode Produk */
@@ -462,7 +464,7 @@ class InventoryController extends Controller
             'supplier_id'       => 0,
             'satuan'            => $request->satuan,
             'harga_beli'        => $request->harga_beli,
-            'harga_jual'        => $request->harga_jual,
+            'harga_jual'        => 0,
         ];
         $produk = Products::create($data);
 
@@ -507,7 +509,6 @@ class InventoryController extends Controller
             'product_name'      => $request->product_name,
             'satuan'            => $request->satuan,
             'harga_beli'        => $request->harga_beli,
-            'harga_jual'        => $request->harga_jual,
         ];
         Products::where('diproduct', $id)->update($data);
         return response(['success' => 'Data Product Berhasil Diupdate!']);
@@ -551,29 +552,69 @@ class InventoryController extends Controller
     {
         $data = [
             'reservasi'     => 'data',
-            'item'          => Outbounditem::where('order_id', $id)
+            'item'          => Outbounditem::where('outbounditems.order_id', $id)
                                 ->join('products', 'products.diproduct', '=', 'outbounditems.product_id')
+                                ->join('orderitems', 'orderitems.idoi', '=', 'outbounditems.item_id')
+                                ->join('items', 'items.iditem', '=', 'orderitems.item_id')
+                                ->select(
+                                    'item_name',
+                                    'product_code',
+                                    'product_name',
+                                    'outbounditems.qty',
+                                    'material_price',
+                                    'sub_total',
+                                    'outbounditems.idoi',
+                                    'items.item_name',
+                                    'orderitems.merk',
+                                    'orderitems.pk'
+                                )
                                 ->get(),
             'total'         => Outbounditem::where('order_id', $id)->sum('sub_total'),
         ];
         return view('inventory.reservasiTable', $data);
     }
+
+    public function getItemOrder($id)
+    {
+        $queryOrder = Order::where('idorder', $id)->first();
+
+        $query = Orderitem::join('items', 'items.iditem', '=', 'orderitems.item_id')
+                ->where('order_id', $queryOrder->uuid)
+                ->select('orderitems.idoi as id', 'item_name', 'price', 'merk', 'pk')
+                ->get();
+        return response()->json($query);
+    }
+
     public function reservasiAdd(Request $request)
     {
         $request->validate([
             'product'   => 'required',
             'order'     => 'required',
             'qty'       => 'required',
+            'item'      => 'required',
         ]);
 
         /**load product */
         $loadProduct = Products::where('diproduct', $request->product)->first();
-        $price = $loadProduct->harga_jual - $loadProduct->harga_beli;
+        $price = $loadProduct->harga_beli;
         $total_price = $price * $request->qty;
 
         /**load order */
         $loadOrder = Order::where('idorder', $request->order)->first();
+        $totalPriceTransaksi = $price*$request->qty ?? 0;
+        $totalPriceOrder = $loadOrder->total_price ?? 0;
+        
+        /**load order item */
+        $loadOrderItem = Orderitem::where('idoi', $request->item)->first();
+        $priceItem = $loadOrderItem->price ?? 0;
 
+        /**load stock */
+        $loadStock = Stock::where('product_id', $request->product)
+            ->where('branch_id', Auth::user()->branch_id)
+            ->first();
+        $stockSekarang = $loadStock->stock ?? 0;
+
+        /**Data outbound */
         $data = [
             'reservasi_date'    => date('Y-m-d'),
             'outbound_id'       => 0,
@@ -584,33 +625,123 @@ class InventoryController extends Controller
             'sub_total'         => $total_price,
             'teknisi'           => $loadOrder->teknisi,
             'temp_status'       => 0,
-
+            'item_id'           => $request->item,
         ];
         Outbounditem::create($data);
 
-        /**insert product ke user */
-        $cek = Productuser::where('produk_id', $request->product)->where('teknisi_id', $loadOrder->teknisi)->count();
-        if($cek == 0){
-            Productuser::create([
-                'teknisi_id'    => $loadOrder->teknisi,
-                'produk_id'     => $request->product,
-                'qty_awal'      => 0,
-                'qty'           => 0,
-                'reservasi_id'  => 0,
-                'retur'         => 0,
+        /**Data outbound */
+        $dataOrderMaterial = [
+            'order_id'      => $request->order,
+            'product_id'    => $request->product,
+            'teknisi_id'    => $loadOrder->teknisi,
+            'qty'           => $request->qty,
+            'price'         => $price,
+            'jumlah'        => $request->qty*$price,
+            'hpp'           => 0,
+        ];
+        Ordermaterial::create($dataOrderMaterial);
+
+        //ubah total price order
+        // Order::where('idorder', $loadOrder->idorder)
+        //     ->update([
+        //         'total_price'   => $totalPriceOrder-$totalPriceTransaksi,
+        //     ]);
+
+        //ubah total price
+        Orderitem::where('idoi', $request->item)
+        ->update([
+            'price' => $priceItem-$totalPriceTransaksi,
+        ]);
+
+        //Create Mutasi
+        Mutation::create([
+            'product_id'        => $request->product,
+            'tanggal_mutasi'    => date('Y-m-d'),
+            'jenis'             => 'Outbound',
+            'order_id'          => $loadOrder->uuid,
+            'reservasi_id'      => '-',
+            'penerima'          => Auth::user()->id,
+            'qty'               => $request->qty,
+            'saldo_awal'        => $stockSekarang,
+            'saldo_akhir'       => $stockSekarang-$request->qty,
+            'branch_id'         => Auth::user()->branch_id,
+        ]);
+
+        //update stok
+        Stock::where('idstock', $loadStock->idstock)
+            ->update([
+                'stock'     => $stockSekarang-$request->qty,
             ]);
-            return response(['success' => 'Product Berhasil Ditambahkan!']);
-        }else{
-            return response(['success' => 'Product Berhasil Ditambahkan!']);
-        }
+
     }
+
     public function reservasiDelete(Request $request)
     {
         $request->validate([
             'id'    => 'required',
         ]);
         $id = $request->id;
+
+        /**Load Outbound Item */
+        $loadOutbound = Outbounditem::where('idoi', $request->id)->first();
+        $idOrder = $loadOutbound->order_id;
+
+        /**Load Data Order */
+        $loadOrder = Order::where('idorder', $idOrder)->first();
+        $totalPrice = $loadOrder->total_price+$loadOutbound->sub_total ?? 0;
+
+        /**load order item */
+        $loadOrderItem = Orderitem::where('idoi', $loadOutbound->item_id)->first();
+        $priceItem = $loadOrderItem->price+$loadOutbound->sub_total ?? 0;
+
+        /**loadStock Material */
+        $loadStock = Stock::where('product_id', $loadOutbound->product_id)
+            ->where('branch_id', Auth::user()->branch_id)
+            ->first();
+        $stockAkhir = $loadStock->stock+$loadOutbound->qty ?? 0;
+
+
+        /**Delete Outbound Item */
         Outbounditem::where('idoi', $id)->delete();
+
+        /**Delete Order Material */
+        Ordermaterial::where('order_id', $idOrder)
+            ->where('product_id', $loadOutbound->product_id)
+            ->delete();
+
+        //Create Mutasi
+        Mutation::create([
+            'product_id'        => $loadOutbound->product_id,
+            'tanggal_mutasi'    => date('Y-m-d'),
+            'jenis'             => 'Retur',
+            'order_id'          => $loadOrder->uuid,
+            'reservasi_id'      => '-',
+            'penerima'          => Auth::user()->id,
+            'qty'               => $loadOutbound->qty,
+            'saldo_awal'        => $loadStock->stock,
+            'saldo_akhir'       => $stockAkhir,
+            'branch_id'         => Auth::user()->branch_id,
+        ]);
+
+        /**update stok */
+        Stock::where('idstock', $loadStock->idstock)
+            ->update([
+                'stock'     => $stockAkhir,
+            ]);
+
+        /**update total price order */
+        // Order::where('idorder', $loadOrder->idorder)
+        //     ->update([
+        //         'total_price'   => $totalPrice,
+        //     ]);
+
+        //ubah total price
+        Orderitem::where('idoi', $loadOutbound->item_id)
+        ->update([
+            'price' => $priceItem,
+        ]);
+
+
         return response(['success' => 'Removed!']);
     }
     

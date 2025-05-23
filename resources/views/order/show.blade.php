@@ -35,6 +35,18 @@
           </div>
         @endif
 
+        @if (session('error'))
+        <div class="col-sm-12 alert alert-danger">
+            <span class="fw-bold"> {{session('error')}} </span>
+        </div>
+        @endif
+
+        @if (session('success'))
+        <div class="col-sm-12 alert alert-success">
+            <span class="fw-bold"> {{session('success')}} </span>
+        </div>
+        @endif
+
         <div class="col-md-12">
 
                   <!-- Default box -->
@@ -116,7 +128,7 @@
                       <td>{{$item->item_name}}</td>
                       <td>{{$item->merk}}</td>
                       <td>{{$item->qty}}</td>
-                      <td>{{$item->pk}} PK</td>
+                      <td>{{$item->pk}}</td>
                       <td>Lantai {{$item->lantai}}, Ruangan {{$item->ruangan}}</td>
                       <td>Rp.{{number_format($item->price)}}</td>
                     </tr>
@@ -125,7 +137,7 @@
                   <thead>
                     <tr>
                       <th colspan="6">Sub. Total</th>
-                      <th>Rp.{{number_format($order->total_price)}}</th>
+                      <th>Rp.{{number_format($order_item->sum('price'))}}</th>
                     </tr>
                   </thead>
                 </table>
@@ -174,7 +186,7 @@
           @if(Auth::user()->privilege == 5 || Auth::user()->privilege == 1 || Auth::user()->privilege == 6)
             <a href="/order/{{$order->uuid}}/edit" class="btn btn-sm btn-danger">Edit Order</a>
           @endif
-            <a href="/order" class="btn btn-sm btn-secondary float-right">Order List</a>
+            <a href="/order" class="btn btn-sm btn-secondary float-right">Kembali ke Order</a>
         </div>
       </div>
       <!-- /.card -->
@@ -183,78 +195,8 @@
         <!-- /.col -->
 
         <div class="col md-12">
-        <div class="card">
-            <div class="card-header border-transparent">
-                <h3 class="card-title">Timeline Orders</h3>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="timeline">
-                  <!-- The timeline -->
-                  <div class="timeline timeline-inverse">
-                      <!-- timeline time label -->
-                      <div class="time-label">
-                      <span class="bg-primary">
-                          Timeline
-                      </span>
-                      </div>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <div>
-                      </div>
-                      <!-- END timeline item -->
-                      @foreach($timeline as $tline)
-                      <!-- timeline item -->
-                      <div>
-                          <i class="fas fa-user bg-info"></i>
-                          <div class="timeline-item">
-                              <span class="time"><i class="far fa-clock"></i> {{$tline->created_at}} </span>
-                              <h3 class="timeline-header border-0">
-                                  <a href="javascript:void(0)">{{$tline->name}}</a> <i class="bi bi-chevron-right"></i> <strong>{{$tline->keterangan}}</strong> <br/>
-                                  <i>{{$tline->timeline_status}}</i>
-                                  <p>
-                                    @if($tline->keterangan == 'Order Closing')
-                                    <button type="button" class="btn btn-success btn-sm" onclick="lihatNota()"><i class="bi bi-image"></i> Lihat Nota</button>
-                                    @endif
-                                    @if($tline->keterangan == 'Order Cancel')
-                                    <i>{{$tline->timeline_status}}</i>
-                                    @endif
-                                    @if($tline->keterangan == 'Order Pending')
-                                    <i>{{$tline->timeline_status}}</i>
-                                    @endif
-                                  </p>
-                              </h3>
-                          </div>
-                      </div>
-                      <!-- END timeline item -->
-                      @endforeach
-                      <div>
-                          @if($order->progres == 'Complete')<i class="fas fa-check bg-success"></i>@endif
-                      </div>
-                      <!-- END timeline item -->
-                      
-                  </div>
-                </div>
-                <!-- /.tab-pane -->
-            </div><!-- /.card-body -->
-            <div class="card-footer">
-              @if($order->progres == 'Complete')
-                @if(Auth::user()->privilege == '2')
-                  <button type="button" onclick="modalRecal()" class="btn btn-warning btn-sm"><i class="bi bi-repeat"></i> Recall Order</button>
-                @endif
-              @endif
-            </div>
-        </div><!-- /.card -->
+        @livewire('order.form-update', ['idorder' => $order->idorder])
 
         </div><!-- /.col -->
 

@@ -129,8 +129,9 @@ class Approval extends Component
                     $akun = Opsitem::findOrFail($data->akun_id);
 
                     $items = Orderitem::join('items', 'items.iditem', '=', 'orderitems.item_id')
-                            ->where('order_id', $order->uuid)->select('items.item_name', 'orderitems.merk',
-                                'orderitems.pk', 'orderitems.qty', 'orderitems.price')
+                            ->join('outbounditems', 'outbounditems.item_id', '=', 'orderitems.idoi')
+                            ->where('orderitems.order_id', $order->uuid)->select('items.item_name', 'orderitems.merk',
+                                'orderitems.pk', 'orderitems.qty', 'orderitems.price', 'outbounditems.sub_total')
                             ->get();
 
                     
@@ -139,19 +140,21 @@ class Approval extends Component
                     //create arus khas
                     foreach ($items as $item) {
 
+                        $price = $item->price + $item->sub_total ?? 0;
+
                         $saldo = AccountingSaldo::where('branch_id', Auth::user()->branch_id)->first();
 
                         if ($data->tipe == 'debit') {
-                            $saldoAkhir = $saldo->saldo_akhir+$item->price;
+                            $saldoAkhir = $saldo->saldo_akhir+$price;
                         }
                         if ($data->tipe == 'credit') {
-                            $saldoAkhir = $saldo->saldo_akhir-$item->price;
+                            $saldoAkhir = $saldo->saldo_akhir-$price;
                         }
 
                         if ($data->payment_method == 'Cash' && $data->tipe == 'debit') {
-                            $pettyKhas = $saldo->petty_cash+$item->price;
+                            $pettyKhas = $saldo->petty_cash+$price;
                         } elseif ($data->payment_method == 'Cash' && $data->tipe == 'credit') {
-                            $pettyKhas = $saldo->petty_cash-$item->price;
+                            $pettyKhas = $saldo->petty_cash-$price;
                         } else {
                             $pettyKhas = $saldo->petty_cash;
                         }
@@ -165,7 +168,7 @@ class Approval extends Component
                             'qty'               => $item->qty,
                             'payment_method'    => $data->payment_method,
                             'payment_type'      => $data->tipe,
-                            'amount'            => $item->price,
+                            'amount'            => $price,
                             'akun_id'           => $akun->id, //from ops item table
                             'klasifikasi'       => $akun->category,
                             'petty_cash'        => $pettyKhas,

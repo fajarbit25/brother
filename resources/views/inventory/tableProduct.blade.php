@@ -6,8 +6,7 @@
         <th>Nama Barang</th>
         <th>Kategori</th>
         <th>Satuan</th>
-        <th>Harga Beli</th>
-        <th>Harga Jual</th>
+        <th>Harga</th>
         <th>Stok</th>
         <th>Manage</th>
     </tr>
@@ -22,9 +21,6 @@
         <td>{{$p->unit_code}}</td>
         <td>
             <div class="sparkbar" data-color="#00a65a" data-height="20">{{number_format($p->harga_beli)}}</div>
-        </td>
-        <td>
-            <div class="sparkbar" data-color="#00a65a" data-height="20">{{number_format($p->harga_jual)}}</div>
         </td>
         <td>
            <span id="stok-{{$p->idproduk}}"> {{number_format($p->stock)}} </span>

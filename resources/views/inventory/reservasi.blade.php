@@ -47,7 +47,7 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-8">
                   <div class="form-group">
                     <label>Nama Order</label>
                     <select class="form-control select2bs4" style="width: 100%;" id="orderId">
@@ -55,6 +55,15 @@
                       @foreach($order as $or)
                       <option value="{{$or->idorder}}" >{{$or->uuid}} {{$or->costumer_name}} | {{$or->name}} </option>
                       @endforeach
+                    </select>
+                  </div>
+                </div><!-- /.col -->  
+
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label>Item Pekerjaan</label>
+                    <select class="form-control select2bs4" style="width: 100%;" id="itemId">
+                        <option value="">--Pilih Item--</option>
                     </select>
                   </div>
                 </div><!-- /.col -->  
@@ -125,6 +134,7 @@
                   <thead>
                   <tr>
                     <th>No</th>
+                    <th>Item Pekerjaan</th>
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Qty</th>
@@ -169,6 +179,6 @@
 <!-- /.content-wrapper -->
 
 {{-- Js --}}
-<script src="{{asset('/assets/js/reservasi.js?v=1.4')}}"></script>
+<script src="{{asset('/assets/js/reservasi.js?v='.time())}}"></script>
 @endsection
 

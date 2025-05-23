@@ -112,6 +112,9 @@ Route::controller(InventoryController::class)->group(function(){
     Route::get('/inventory/pos', 'pos')->middleware('auth')->name('inventory.pos');
     Route::get('/inventory/pos-report', 'posReport')->middleware('auth')->name('inventory.posReport');
 
+    /**update v.3 */
+    Route::get('/inventory/get-item-order/{id}', 'getItemOrder')->middleware('auth')->name('inventory.getITemOrder');
+
 });
 
 Route::controller(OrderController::class)->group(function(){

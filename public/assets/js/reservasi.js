@@ -27,6 +27,35 @@ $("#order").change(function(){
     load();
 });
 
+
+$("#orderId").change(function(){
+    var idorder = $("#orderId").val();
+    var url = "/inventory/get-item-order/" + idorder;
+
+    $.ajax({
+        url:url,
+        type:'GET',
+        dataType:'json',
+        cache:false,
+        success:function(data) {
+            
+            // Iterasi data dari respons
+            $.each(data, function (index, item) {
+                $('#itemId').append(
+                    $('<option>', {
+                        value: item.id, // atau item.kode, tergantung struktur data kamu
+                        text: item.item_name + " - " + item.merk + " " + item.pk  // atau item.nama
+                    })
+                );
+            });
+
+        }, 
+        error:function(){
+            console.log('gagal mengambil data!');
+        }
+    });
+});
+
 $("#product").change(function(){
     var idproduct = $(this).val();
     var url = "/produk/"+ idproduct +"/stockJson";
@@ -52,6 +81,8 @@ $("#product").change(function(){
     });
 });
 
+
+
 /**Add Item */
 $("#btn-add").click(function(){
     /**Animation */
@@ -62,6 +93,7 @@ $("#btn-add").click(function(){
     var order = $("#orderId").val();
     var product = $("#product").val();
     var qty = $("#qty").val();
+    var item = $("#itemId").val();
 
     console.log(order)
 
@@ -73,6 +105,7 @@ $("#btn-add").click(function(){
             order:order,
             product:product,
             qty:qty,
+            item:item,
         },
         success:function(response){
             /**Animation */
@@ -112,6 +145,7 @@ $("#btn-add").click(function(){
 function deleteItem(id)
 {
     var url = "/reservasi/delete";
+    var item = $("#itemId").val();
     $.ajax({
         url:url,
         type:'POST',

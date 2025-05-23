@@ -1,6 +1,7 @@
 @foreach($item as $itm)
 <tr>
     <td>{{$loop->iteration}}</td>
+    <td> {{ $itm->item_name.' - '.$itm->merk.' '.$itm->pk }} </td>
     <td>{{$itm->product_code}}</td>
     <td> {{$itm->product_name}} </td>
     <td> {{$itm->qty}} </td>
@@ -12,12 +13,12 @@
 </tr>
 @endforeach
 <tr>
-    <td colspan="5">Grand Total</td>
+    <td colspan="6">Grand Total</td>
     <td colspan="">{{number_format($total)}}</td>
     <td></td>
 </tr>
 @if($total != 0)
-<tr>
+{{-- <tr>
     <td colspan="7" class="text-end">
                 <button  class="btn btn-success float-right" id="btn-submit">Submit Data</button>
                 <button class="btn btn-success float-right" id="btn-loading-submit" type="button" disabled>
@@ -25,7 +26,7 @@
                   <span role="status">Loading...</span>
                 </button>
     </td>
-</tr>
+</tr> --}}
 @endif
 <script>
     $(document).ready(function(){

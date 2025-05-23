@@ -18,5 +18,6 @@ class Outbounditem extends Model
         'sub_total',
         'teknisi',
         'temp_status',
+        'item_id',
     ];
 }

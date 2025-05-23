@@ -131,14 +131,8 @@
             </div>
               <div class="col-sm-6">
                   <div class="form-group">
-                      <label for="harga_beli">Harga Beli</label>
+                      <label for="harga_beli">Harga</label>
                       <input type="number" name="harga_beli" id="harga_beli" class="form-control" value="0" autocomplete="off" required/>
-                  </div>
-              </div>
-              <div class="col-sm-6">
-                  <div class="form-group">
-                      <label for="harga_jual">Harga Jual</label>
-                      <input type="number" name="harga_jual" id="harga_jual" class="form-control" autocomplete="off" required/>
                   </div>
               </div>
             
@@ -187,5 +181,5 @@
 </div>
 <!-- /.modal -->
 {{-- Js --}}
-<script src="{{asset('/assets/js/product.js')}}"></script>
+<script src="{{asset('/assets/js/product.js?v='.time())}}"></script>
 @endsection

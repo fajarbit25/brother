@@ -51,7 +51,9 @@ class OrderController extends Controller
             'costumer'  => Costumer::where('idcostumer', $load->costumer_id)->first(),
             'teknisi'   => User::where('id', $load->teknisi)->first(),
             'helper'    => User::where('id', $load->helper)->first(),
-            'order_item'=> Orderitem::where('order_id', $load->uuid)->join('items', 'items.iditem', 'orderitems.item_id')->get(),
+            'order_item'=> Orderitem::where('order_id', $load->uuid)
+                            ->join('items', 'items.iditem', 'orderitems.item_id')
+                            ->get(),
             'timeline'  => Timeline::where('order_id', $load->idorder)
                             ->join('users', 'users.id', '=', 'timelines.user_id')
                             ->select('timelines.keterangan', 'timelines.created_at', 'timelines.timeline_status', 'users.name')
@@ -372,11 +374,13 @@ class OrderController extends Controller
 
         $cek = Order::where('progres', '!=', 'Complete')->where('teknisi', $teknisi)->where('jadwal', $jadwal)->count();
 
-        if($cek > 0){
-            return response(['success' => 'true']);
-        }else{
-            return response(['success' => 'false']);
-        }
+        return response(['success' => 'false']);
+
+        // if($cek > 0){
+        //     return response(['success' => 'true']);
+        // }else{
+        //     return response(['success' => 'false']);
+        // }
     }
 
     /**Approve Nota */

@@ -1,7 +1,7 @@
 @foreach($item as $itm)
 <tr>
     <td>{{$loop->iteration}}</td>
-    <td> {{ $itm->item_name.' - '.$itm->merk.' '.$itm->pk }} </td>
+    <td> {{ $itm->item_name ?? ''.' - '.$itm->merk ?? ''.' '.$itm->pk ?? '' }} </td>
     <td>{{$itm->product_code}}</td>
     <td> {{$itm->product_name}} </td>
     <td> {{$itm->qty}} </td>

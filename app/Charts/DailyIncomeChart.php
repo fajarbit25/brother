@@ -38,7 +38,7 @@ class DailyIncomeChart
         foreach($order as $or) {
             $totalOrder = Order::where('tanggal_order', $or->tanggal_order)->sum('total_price');
             $dataOrder[] = $or->tanggal_order;
-            $dataTotalOrder[] = $totalOrder;
+            $dataTotalOrder[] = number_format($totalOrder, 0, '.', ',');
         }
 
         return $this->incomeChart->lineChart()

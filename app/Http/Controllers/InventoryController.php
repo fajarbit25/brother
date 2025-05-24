@@ -554,7 +554,7 @@ class InventoryController extends Controller
             'reservasi'     => 'data',
             'item'          => Outbounditem::where('outbounditems.order_id', $id)
                                 ->join('products', 'products.diproduct', '=', 'outbounditems.product_id')
-                                ->leftJoin('orderitems', 'orderitems.idoi', '=', 'outbounditems.item_id')
+                                ->join('orderitems', 'orderitems.idoi', '=', 'outbounditems.item_id')
                                 ->join('items', 'items.iditem', '=', 'orderitems.item_id')
                                 ->select(
                                     'item_name',

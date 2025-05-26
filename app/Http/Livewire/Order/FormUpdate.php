@@ -41,6 +41,8 @@ class FormUpdate extends Component
     public $keteranganContinous;
     public $keteranganPending;
 
+    public $notaFile;
+
 
     public function mount($idorder)
     {
@@ -80,13 +82,15 @@ class FormUpdate extends Component
                     'progres', 
                     'uuid',
                     'teknisi',
-                    'helper')
+                    'helper',
+                    'nota')
                 ->first();
         $this->status = $query->status ?? 'load gagal!';
         $this->progres = $query->progres ?? 'load gagal!';
         $this->uuid = $query->uuid ?? 'none';
         $this->teknisi = $query->teknisi ?? '-';
         $this->helper = $query->helper ?? '-';
+        $this->notaFile = $query->nota ?? "";
     }
 
     public function getMerk()

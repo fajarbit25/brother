@@ -17,6 +17,8 @@
         
         <div class="row">
 
+
+
             <div class="col-sm-12 mb-3">
 
                 @if($progres != 'Complete')
@@ -43,6 +45,12 @@
                         Pending 
                     </button>
                     @endif
+                @else 
+
+                    @if ($notaFile != "")
+                    <a href="{{ url('storage/nota/'.$notaFile) }}" target="_blank">Lihat Nota : {{$notaFile}}</a>
+                    @endif
+
                 @endif
 
             </div>

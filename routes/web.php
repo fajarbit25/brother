@@ -104,6 +104,7 @@ Route::controller(InventoryController::class)->group(function(){
     /**Ajax url outbound */
     Route::get('/outbound/table', 'outboundTable')->middleware('auth')->name('outbound.outboundTable');
     Route::get('/outbound/{start}/{end}/filter', 'filterOutbound')->middleware('auth')->name('outbound.filterOutbound');
+    Route::get('/outbound/{start}/{end}/{key}/filter', 'filterOutboundSearch')->middleware('auth')->name('outbound.filterOutboundSearch');
     
     Route::get('/produk/singkron-user', 'singkronUser')->middleware('auth')->name('produk.singkron');
     Route::post('/produk/singkron-user', 'singkronUserProses')->middleware('auth')->name('produk.singkronProses');
@@ -276,6 +277,7 @@ Route::controller(FinanceController::class)->group(function(){
     Route::post('/finance/inbound/prosesPayment', 'prosesPayment')->middleware('auth')->name('finance.prosesPayment');
 
 });
+
 
 /**Teknisi */
 Route::controller(TeknisiController::class)->group(function(){

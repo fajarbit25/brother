@@ -301,28 +301,53 @@ class InventoryController extends Controller
     public function outboundTable(): View
     {
         $data = [
-            'result'    => Outbound::join('orders', 'orders.idorder', '=', 'order_id')
-                                    ->join('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
-                                    ->join('users as teknisi', 'orders.teknisi', '=', 'teknisi.id')
-                                    ->join('users as helper', 'orders.helper', '=', 'helper.id')
-                                    ->where('reservasi_date', 'LIKE', '%'.date('Y-m').'%')
-                                    ->select('teknisi.name as teknisi_name', 'helper.name as helper_name', 'reservasi_date', 
-                                    'reservasi_id', 'uuid', 'costumer_name',  'reservasi_approved',)
-                                    ->paginate(10),
+            'result'        => Outbounditem::join('orders', 'orders.idorder', '=', 'outbounditems.order_id')
+                                ->leftJoin('outbounds', 'outbounds.idout', '=', 'outbounditems.outbound_id')
+                                ->join('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
+                                ->join('users as teknisi', 'orders.teknisi', '=', 'teknisi.id')
+                                ->join('products', 'products.diproduct', '=', 'outbounditems.product_id')
+                                ->join('units', 'units.idunit', '=', 'products.satuan')
+                                ->where('outbounditems.reservasi_date', 'LIKE', '%'.date('Y-m').'%')
+                                ->select('teknisi.name as teknisi_name', 'outbounditems.reservasi_date', 
+                                'reservasi_id', 'uuid', 'costumer_name',  'reservasi_approved',
+                                'product_name', 'unit_code', 'qty', 'material_price', 'sub_total')
+                                ->paginate(10),
         ];
         return view('inventory.outboundTable', $data);
     }
     public function filterOutbound($start, $end): View
     {
         $data = [
-            'result'    => Outbound::join('orders', 'orders.idorder', '=', 'order_id')
-                                    ->join('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
-                                    ->join('users as teknisi', 'orders.teknisi', '=', 'teknisi.id')
-                                    ->join('users as helper', 'orders.helper', '=', 'helper.id')
-                                    ->whereBetween('reservasi_date', [$start, $end])
-                                    ->select('teknisi.name as teknisi_name', 'helper.name as helper_name', 'reservasi_date',
-                                     'reservasi_id', 'uuid', 'costumer_name', 'reservasi_approved',)
-                                    ->paginate(100000),
+            'result'    => Outbounditem::join('orders', 'orders.idorder', '=', 'outbounditems.order_id')
+                                ->leftJoin('outbounds', 'outbounds.idout', '=', 'outbounditems.outbound_id')
+                                ->join('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
+                                ->join('users as teknisi', 'orders.teknisi', '=', 'teknisi.id')
+                                ->join('products', 'products.diproduct', '=', 'outbounditems.product_id')
+                                ->join('units', 'units.idunit', '=', 'products.satuan')
+                                ->whereBetween('outbounditems.reservasi_date', [$start, $end])
+                                ->select('teknisi.name as teknisi_name', 'outbounditems.reservasi_date', 
+                                'reservasi_id', 'uuid', 'costumer_name',  'reservasi_approved',
+                                'product_name', 'unit_code', 'qty', 'material_price', 'sub_total')
+                                ->paginate(100000),
+        ];
+        return view('inventory.outboundTable', $data);
+    }
+
+    public function filterOutboundSearch($start, $end, $key) : View
+    {
+        $data = [
+            'result'    => Outbounditem::join('orders', 'orders.idorder', '=', 'outbounditems.order_id')
+                                ->leftJoin('outbounds', 'outbounds.idout', '=', 'outbounditems.outbound_id')
+                                ->join('costumers', 'costumers.idcostumer', '=', 'orders.costumer_id')
+                                ->join('users as teknisi', 'orders.teknisi', '=', 'teknisi.id')
+                                ->join('products', 'products.diproduct', '=', 'outbounditems.product_id')
+                                ->join('units', 'units.idunit', '=', 'products.satuan')
+                                ->whereBetween('outbounditems.reservasi_date', [$start, $end])
+                                ->where('product_name', 'LIKE', '%'.$key.'%')
+                                ->select('teknisi.name as teknisi_name', 'outbounditems.reservasi_date', 
+                                'reservasi_id', 'uuid', 'costumer_name',  'reservasi_approved',
+                                'product_name', 'unit_code', 'qty', 'material_price', 'sub_total')
+                                ->paginate(10),
         ];
         return view('inventory.outboundTable', $data);
     }

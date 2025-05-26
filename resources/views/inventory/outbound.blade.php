@@ -62,15 +62,21 @@
             <!-- /.card-header -->
             <div class="card-body p-0">
               <div class="table-responsive">
+                <div class="col-sm-4 mb-2">
+                  <input type="search" class="form-control" id="key" placeholder="Cari produk..">
+                </div>
                 <table class="table m-0">
                   <thead>
                   <tr>
                     <th>No</th>
                     <th>Tanggal</th>
-                    <th>Reservasi Id</th>
-                    <th>Order</th>
+                    <th>Order Id</th>
+                    <th>Costumer</th>
+                    <th>Items</th>
+                    <th>Qty</th>
+                    <th>Harga</th>
+                    <th> Jumlah </th>
                     <th>Teknisi</th>
-                    <th>Status</th>
                   </tr>
                   </thead>
                   <tbody id="outbound-table">

@@ -6,6 +6,7 @@ $(document).ready(function(){
     });
     /**Hide Element */
     $("#formFilter").hide();
+    $("#key").hide();
 
     /**load All */
     loadTable()
@@ -48,6 +49,28 @@ $("#btn-filter").click(function() {
         // Memuat data dari URL
         $("#outbound-table").load(url);
     }, 1000); // Waktu delay dalam milidetik (2 detik = 2000 milidetik)
+
+    $("#key").show();
+});
+
+$("#key").keyup(function () {
+    // animasi
+    $(this).html('<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading...');
+
+    // Mengambil nilai dari input
+    var start = $("#start").val();
+    var end = $("#end").val();
+    var key = $("#key").val();
+    var url = '/outbound/' + start + '/' + end + '/' + key + '/filter';
+    
+    // Menunda eksekusi kode selama 2 detik
+    setTimeout(function() {
+        // Menghapus efek visual pada tombol filter
+        $("#btn-filter").html('<i class="bi bi-funnel"></i> Filter');
+
+        // Memuat data dari URL
+        $("#outbound-table").load(url);
+    }, 1000); // Waktu delay dalam milidetik (2 detik = 2000 milidetik)
 });
 
 /**Pagination */
@@ -73,6 +96,8 @@ function paginationNext(page)
 $("#filter").click(function(){
     $("#formFilter").show();
 });
+
+
 
 function modalBranch()
 {

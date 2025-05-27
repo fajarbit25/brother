@@ -104,5 +104,5 @@
 <!-- /.content-wrapper -->
 
 {{-- Js --}}
-<script src="{{asset('/assets/js/outbound.js')}}"></script>
+<script src="{{asset('/assets/js/outbound.js?v=2.1')}}"></script>
 @endsection

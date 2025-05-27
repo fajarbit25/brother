@@ -108,6 +108,20 @@ class InventoryController extends Controller
         return view('inventory.tableReportInbound', $data);
     }
 
+    public function InboundTableReportSearch($start, $end, $key): View
+    {
+        $data = [
+            'result'        => Inbounditem::join('products', 'products.diproduct', 'inbounditems.product_id')
+                                ->join('inbounds', 'inbounds.id', '=', 'inbounditems.inbound_id')
+                                ->join('suppliers', 'suppliers.idsupplier', '=', 'inbounds.supplier_id')
+                                ->join('branches', 'branches.idbranch', '=', 'inbounds.branch_id')
+                                ->whereBetween('inbounds.tanggal', [$start, $end])
+                                ->where('product_name', 'like', '%'.$key.'%')
+                                ->select('tanggal', 'do', 'supplier_name', 'product_name', 'branch_name', 'harga_beli', 'harga_jual', 'qty', 'jumlah')->paginate(10),
+        ];
+        return view('inventory.tableReportInbound', $data);
+    }
+
     public function export($start, $end)
     {
         return Excel::download(new ExportInbound($start, $end), 'inbound_report_'.$start.'_sd_'.$end.'.xlsx');

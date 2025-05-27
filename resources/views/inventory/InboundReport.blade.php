@@ -48,6 +48,15 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0">
+              <div class="row">
+                <div class="col-sm-4 mb-2">
+                  <input type="search" class="form-control"
+                  id="form-search" placeholder="Cari produk...">
+                </div>
+                <div class="col-sm-2">
+                  <button class="btn btn-success" id="refreshInbound">Refresh</button>
+                </div>
+              </div>
               <div class="table-responsive">
                 <table class="table m-0">
                   <thead>
@@ -133,6 +142,6 @@
 <!-- /.modal -->
 
 {{-- Js --}}
-<script src="{{asset('/assets/js/inbound.js')}}"></script>
+<script src="{{asset('/assets/js/inbound.js?=v.1.2')}}"></script>
 @endsection
 

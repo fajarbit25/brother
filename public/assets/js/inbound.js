@@ -10,6 +10,9 @@ $(document).ready(function(){
     loadSatuan()
     loadCategory()
     $("#btn-excel").hide();
+    $("#form-search").hide()
+    $("#refreshInbound").hide()
+
 });
 
 function loadTable()
@@ -339,6 +342,9 @@ $("#btn-report").click(function(){
     $(this).attr('disabled', true)
     $(this).html('<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading...')
 
+    $("#form-search").show()
+    $("#refreshInbound").show();
+
     var start = $("#start").val()
     var end = $("#end").val()
 
@@ -354,6 +360,24 @@ $("#btn-report").click(function(){
 
     $(this).attr('disabled', false)
     $(this).html('Lihat')
+});
+
+/**Form cari */
+$("#form-search").keyup(function () {
+    var start = $("#start").val()
+    var end = $("#end").val()
+    var key = $("#form-search").val()
+
+    var url = "/inventory/inbound/" + start + "/" + end +  "/" + key + "/report"; 
+    $("#table-report").load(url)
+});
+
+$("#refreshInbound").click(function() {
+    var start = $("#start").val()
+    var end = $("#end").val()
+
+    var url = "/inventory/inbound/" + start + "/" + end + "/report";
+    $("#table-report").load(url)
 });
 
 function modalSatuan()

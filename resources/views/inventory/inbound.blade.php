@@ -169,6 +169,6 @@
 <!-- /.modal -->
 
 {{-- Js --}}
-<script src="{{asset('/assets/js/inbound.js')}}"></script>
+<script src="{{asset('/assets/js/inbound.js?v='.time())}}"></script>
 @endsection
 

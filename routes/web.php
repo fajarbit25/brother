@@ -59,7 +59,7 @@ Route::controller(InventoryController::class)->group(function(){
     Route::post('/inventory/inbound/inboundCancel', 'inboundCancel')->middleware('auth')->name('inventory.inboundCancel');
     Route::get('/inventory/inbound/report', 'InboundReport')->middleware('auth')->name('inventory.InboundReport');
     Route::get('/inventory/inbound/{start}/{end}/report', 'InboundTableReport')->middleware('auth')->name('inventory.InboundTableReport');
-    Route::get('/inventory/inbound/{start}/{end}/{key}/report', 'InboundTableReportSearch')->middleware('auth')->name('inventory.InboundTableReport');
+    Route::get('/inventory/inbound/{start}/{end}/{key}/report', 'InboundTableReportSearch')->middleware('auth')->name('inventory.InboundTableReportSearch');
     Route::get('/inventory/inbound/{start}/{end}/export', 'export')->middleware('auth')->name('inventory.InboundTableExport');
     Route::get('/inventory/{id}/tableMutasi', 'tableMutasi')->middleware('auth')->name('inventory.tableMutasi');
 

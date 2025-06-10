@@ -82,10 +82,18 @@ class InvoiceController extends Controller
         $pdfFile->storeAs('invoice', $fileName, 'public');
 
         /**Update database */
-        Invoice::where('id', $request->id_invoice_upload)->update([
-            'file'      => $fileName,
-            'status'    => 'Review',
-        ]);
+        $invoices = Invoice::where('id', $request->id_invoice_upload)
+                ->get();
+
+        //Looping
+        foreach ($invoices as $invoice) {
+
+            Invoice::where('nomor', $invoice->nomor)->update([
+                'file'      => $fileName,
+                'status'    => 'Review',
+            ]);
+
+        }
 
         return response()->json([
             'status'    => 200,
